@@ -1,0 +1,981 @@
+
+
+*{
+    font-family:'Times New Roman', Times, serif;
+}
+
+.container-fluid
+{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.row{
+    margin: 0px;
+}
+/* Default styles */
+body {
+    font-size: 20px;
+    padding-top: 0px; /* Adjust this value according to your navbar height */
+}
+
+/* For screens less than 480px wide (small mobile screens) */
+@media (max-width: 480px) {
+    body {
+        font-size: 12px;
+    }
+}
+
+.top-fix{
+    /* display: fx; */
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.hide-logo{
+    margin-right: 50px;
+    width: 60px;
+}
+.outer
+{
+    margin: 0px;
+    padding: 0px;    
+}
+.logo
+{
+    height: 4em;
+    width: 4em;
+}
+
+/* Custom Styles for Navbar */
+
+
+
+/* Large screen: Logo left, Menu center */
+@media (min-width: 992px) {
+    .logo-col {
+        text-align: left; /* Logo left aligned */
+    }
+
+    .navbar-nav {
+        justify-content: center; /* Center menu items */
+    }
+}
+
+/* Mobile screens (max-width: 991px): Logo center, Hamburger menu left */
+@media (max-width: 991px) {
+    /* Flexbox for navbar to keep button left and logo center in the same row */
+    .navbar {
+        display: flex;
+        justify-content: space-between; /* Ensures logo and hamburger are spaced out */
+        align-items: center; /* Vertically center-align the items */
+    }
+
+    .logo-col {
+        text-align: center; /* Logo center aligned */
+        flex-grow: 1; /* Takes available space to push hamburger button to left */
+    }
+
+    .navbar-toggler {
+        order: -1; /* Move the hamburger menu button to the left */
+        flex-grow: 0; /* Do not allow the hamburger button to take extra space */
+    }
+
+    .navbar-collapse {
+        width: 100%; /* Ensure the collapse div takes full width */
+    }
+
+    .navbar-nav {
+        text-align: left; /* Align menu items left on mobile */
+        width: 100%; /* Make sure it takes full width */
+    }
+
+    /* Optional: Adjust the navbar padding on small screens for better alignment */
+    .navbar {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+/* Hide dropdown menu by default */
+.nav-item.dropdown .dropdown-menu {
+    display: none;
+}
+
+/* Show the dropdown menu when hovering over the parent .dropdown */
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block; /* Show dropdown on hover */
+}
+
+/* Optional: Add smooth transition for opening and closing the dropdown */
+.nav-item.dropdown .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    min-width: 160px;  /* You can adjust this to match your design */
+}
+
+/* For Mobile Devices, Adjust Padding */
+@media (max-width: 991px) {
+    /* Make Navbar  */
+    .navbar {
+        position: fixed;
+        justify-content: space-between; /* Space between logo, hamburger button, and icons */
+        align-items: center; /* Vertically align items */
+        position: fixed; /* Keep navbar fixed at the top */
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
+        background-color: #fff;
+
+        
+    }
+
+    .slider-container {
+        margin-top: 5px; /* Adjust based on navbar height */
+    }
+
+    /* Adjust body padding to avoid overlap of navbar and content on mobile */
+    body {
+        padding-top: 70px; /* Adjust padding based on navbar height for mobile */
+    }
+}
+
+/* Optional: For larger screens, set the navbar without extra padding */
+@media (min-width: 992px) {
+    /* No extra padding on laptop or larger screens */
+    body {
+        padding-top: 0; /* No top padding for larger screens */
+    }
+
+    /* Optional: Navbar styling can be adjusted here for large screens */
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
+        background-color: #fff;
+        border: solid 0.5px #eee;
+    }
+
+    .slider-container {
+        margin-top: 80px; /* Adjust according to your navbar height */
+    }
+}
+
+/* For mobile screens */
+@media (max-width: 991px) {
+    .navbar-toggler {
+        background-color: white; /* Hamburger button background */
+    }
+
+    .navbar-collapse {
+        background-color: white;  /* Navbar collapse background */
+        z-index: 9999;  /* Ensure it stays above other content */
+    }
+
+    /* Optional: Add box-shadow to the navbar collapse for better visibility */
+    .navbar-collapse.show {
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow effect for visibility */
+    }
+}
+
+
+/* For mobile, you can set a bigger height if needed */
+@media (max-width: 991px) {
+    .navbar {
+        height: 80px;  /* Adjust based on your design */
+    }
+}
+
+
+.down-arrow {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 5px; /* Space between text and arrow */
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black; /*Arrow color */
+    margin-top: 2px; /*Align the arrow vertically with the text*/
+}
+
+/* Mobile screens (max-width: 991px) */
+@media (max-width: 991px) {
+    /* Flexbox for the navbar to keep logo and icons in the same row */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center; /* Vertically align items */
+    }
+
+    .logo-col {
+        text-align: center;
+        flex-grow: 1; /* Takes available space */
+    }
+
+    .navbar-toggler {
+        order: -1; /* Move the hamburger button to the left */
+    }
+
+    .navbar-collapse {
+        width: 100%; /* Ensure navbar content takes full width */
+    }
+
+    /* Ensure navbar items are aligned in a row */
+    .navbar-nav {
+        display: flex;
+        justify-content: flex-end;
+        width: auto;
+    }
+
+    .navbar-nav.ms-auto {   
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* Adjust the icon size on mobile */
+    .icon-container i {
+        font-size: 0.8em !important; /* Reduce icon size on mobile */
+        color: #333;
+    }
+
+    /* Space between icons */
+    .navbar-nav .nav-item {
+        margin-left: 1px;
+        margin-right: 1px;
+    }
+}
+
+/* Styling for icons */
+.navbar-nav .nav-item .nav-link i {
+    font-size: 1.2em; /* Default icon size */
+    color: #333;      /* Icon color */
+    transition: color 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover effect for icons */
+.navbar-nav .nav-item .nav-link:hover i {
+    color: #999;  /* Change color on hover */
+}
+
+/* Space between icons */
+.navbar-nav .nav-item {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.section1
+{
+    padding: 0px;
+    margin: 0px;
+}
+
+/* Dropdown menu styles */
+.nav-item.dropdown .new-class {
+    display: none; /* Initially hide the dropdown */
+    position: absolute; /* Position it below the parent item */
+    top: 100%; /* Align it below the parent */
+    left: 0; /* Align to the left */
+    width: 200px; /* Set a fixed width for the dropdown */
+    padding: 15px; /* Add padding for more space */
+    background-color: #fff; /* Background color */
+    border: 1px solid #ccc; /* Optional: Add a border */
+    border-radius: 4px; /* Optional: Add rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+    z-index: 1000; /* Ensure it appears above other elements */
+    transition: all 0.3s ease; /* Smooth transition */
+}
+/* Show the dropdown menu when hovering over the parent .dropdown */
+.nav-item.dropdown:hover .new-class {
+    display: block; /* Show dropdown on hover */
+}
+
+/* Optional: Style for the links inside the dropdown */
+.new-class ul {
+    list-style: none; /* Remove bullet points */
+    padding: 15px; /* Remove padding */
+    margin: 0; /* Remove margin */
+}
+.new-class ul li {
+    padding: 20px 100px; /* Space between items */
+}
+.new-class ul li a {
+    text-decoration: none; /* Remove underline */
+    color: #333; /* Text color */
+    transition: color 0.3s; /* Smooth color transition */
+}
+.new-class ul li a:hover {
+    text-decoration: underline;   
+}
+.new-class{
+    width: 100%;
+    left: 0px;
+    background-color: #fff;
+}
+
+
+.nav-item .new-class {
+    display: none; /* Dropdown ko pehle chhupana */
+  
+}
+
+.nav-item:hover .new-class {
+    display: block; /* Hover par dropdown dikhana */
+}
+.custom-list
+{
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.custom-list li {
+    margin: 20px;
+}
+
+/* .new-class ul li a {
+    text-decoration: none;
+    color: #000;
+} */
+
+#search-box {
+    position: absolute; /* Position it as needed */
+    background: white; /* Background color */
+    padding: 0px; /* Padding inside the box */
+    z-index: 1000; /* Make sure it appears above other elements */
+    top:60px;
+    right: 0px;
+    display: none;
+    width: 300px;
+}
+/* Media Query for Large Screens */
+@media (min-width: 768px) {
+    #search-box {
+        width: 300px; /* Wider search box for larger screens */
+    }
+}
+
+/* section 1 End  */
+
+/* section 2 Start  */
+ 
+.slider-container {
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.slider-inner {
+    display: flex;
+    transition: transform 0.2s ease;
+    width: 100%; 
+}
+
+.slider-item {
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.slider img {
+    width: 100%;
+    height: auto;
+}
+
+/* Controls Section - Positioned below the slider */
+.slider-controls {
+    position: relative;
+    background-color: white; /* White background for the control section */
+    padding: 0px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); /* Optional: adds shadow above controls */
+}
+
+/* Button style for left and right arrows */
+.slider-controls button {
+    background: none;
+    border: none;
+    padding: 10px;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.slider-controls button:hover {
+    color: #080c10;
+}
+
+/* Style for play/stop button */
+.play-stop-btn {
+    font-size: 18px;
+    font-weight: bold;
+    color: #050505;
+}
+
+.play-stop-btn.stop {
+    color: #050505;
+}
+
+/* Style for page indicator circles  */
+.indicator-btn {
+    height: 2px !important;
+    width: 2px !important;
+    text-decoration: none !important;
+    border-radius: 50% !important;
+    background-color: white !important;
+    border: 2px solid #333 !important;
+    margin: 0 5px ;
+    cursor: pointer ;
+    padding: 4px !important;
+    transition: background-color 0.3s ease;
+}
+
+
+.indicator-btn.active {
+    background-color:black !important;
+    border-color: black !important;
+}
+
+/* Make indicators smaller on mobile */
+@media (max-width: 576px) {
+    .indicator-btn {
+        width: 5px !important;
+        height: 5px !important;
+    }
+}
+
+
+
+/* Center the circles properly under the images */
+.slider-controls .indicator-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 7px;
+}
+
+/* section 2 End  */
+
+
+/* Section 3 Start  */
+.section3
+{
+    background-color: #f7f7f7;
+    margin: 0px;
+    padding: 0px;
+}
+
+.product-name
+{
+    font-size: 1rem; 
+    font-family:'Times New Roman', Times, serif;
+}
+.product-price
+{
+    font-size: 0.8rem;
+     font-family:'Times New Roman', Times, serif;
+}
+
+.image-fade-in {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.image-visible {
+    opacity: 1;
+}
+.fixed-height {
+    height: 30rem; /* Yahan aap apne requirement ke according height set kar sakte hain */
+    width: 25rem; /* Yahan aap apne requirement ke according height set kar sakte hain */
+    object-fit: cover; /* Ye property image ko crop karne mein madad karegi taaki wo fixed height mein fit ho jaye */
+}
+.fixed-height1 {
+    height: 32rem; /* Yahan aap apne requirement ke according height set kar sakte hain */
+    width: 28rem; /* Yahan aap apne requirement ke according height set kar sakte hain */
+    object-fit: cover; /* Ye property image ko crop karne mein madad karegi taaki wo fixed height mein fit ho jaye */
+}
+
+/* section 3 End  */
+
+
+/* section 4 Start */
+/* 3D image  */
+.card
+{
+    width: 300px;
+    height: 455px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 0 36px;
+    perspective: 2500px;
+    cursor: pointer;
+    border-radius: 30px;
+}
+
+.cover-image
+{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.wrapper
+{
+    transition: all 0.5s;
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+    background: black;
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.22) 0px 10px 10px;
+
+}
+
+.wrapper img
+{
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+.card:hover .wrapper
+{
+    transform: perspective(900px) translateY(-5%) rotateX(25deg) translateZ(0);
+    box-shadow: 2px 35px 32px -8px rgba(0,0,0,0.75);
+    -webkit-box-shadow:2px 35px 32px -8px rgba(0,0,0,0.75);
+    -moz-box-shadow:2px 35px 32px -8px rgba(0,0,0,0.75);
+}
+
+.wrapper::before,
+.wrapper::after
+{
+    content:"";
+    opacity: 0;
+    width: 100%;
+    height: 80px;
+    transition: all 0.5s;
+    border-radius: 30px;
+    position: absolute;
+    left: 0;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+.wrapper::before
+{
+    top: 0;
+    height: 100%;
+    background-image: linear-gradient(to top,transparent 46%,rgba(12, 13, 19, 0.5) 68%, rgba(12, 13, 19) 97%);
+}
+
+.wrapper::after
+{
+    bottom: 0;
+    opacity: 1;
+    background-image: linear-gradient(to bottom,transparent 46%,rgba(12, 13, 19, 0.5) 68%, rgba(12, 13, 19) 97%);
+}
+
+.card:hover .wrapper::before,
+.wrapper::after
+{
+    opacity: 1;
+}
+
+.card:hover .wrapper::after
+{
+    height: 120px;
+}
+
+.card:hover .cover-image
+{
+    opacity: 0.3;
+}
+
+.character
+{
+    width: 100%;
+    opacity: 0;
+    transition: all 0.5s;
+    filter: drop-shadow(2px 2px 2px #000);
+    position: absolute;
+    z-index: -1;
+}
+
+.card:hover .character
+{
+    opacity: 1;
+    transform: translate3d(5%, -20%, 670px);
+}
+
+/* section 4 End  */
+
+/* section 5 Start  */
+        .full-screen-image {
+            width: 100%; /* Image ki width ko 100% set karein */
+            height: auto; /* Height ko auto rakhein taaki aspect ratio maintain rahe */
+            max-height: 85vh; /* Screen ki height ka 90% tak cover karein */
+            object-fit: cover; /* Image ko cover karne ke liye */
+          
+        } 
+/* section 5 End  */
+
+/* section 7 start  */
+@media (max-width: 576px) {
+    .col-md-6.col-12.text-justify {
+        padding: 4rem 2rem !important;
+        text-align: center;
+    }
+}
+
+
+
+
+/* section 7 End  */
+
+
+  /* Section 8 Start  */
+  .news-ticker {
+    background-color: black; /* Ticker ka background color */
+    color: #ccc; /* Text color */
+    overflow: hidden; /* Overflow ko chhupana */
+    white-space: nowrap; /* Text ko ek line mein rakhna */
+    position: relative; /* Positioning ke liye */
+    height: 40px; /* Ticker ki height */
+    font-size: 1rem;
+}
+
+.news-content {
+    display: inline-block; /* Inline block display */
+    animation: ticker 15s linear infinite; /* Animation ka istemal */
+    animation-play-state: running;/
+}
+
+.news-ticker:hover .news-content {
+    animation-play-state: paused; /* Hover par animation ruk jaata hai */
+}
+
+@keyframes ticker {
+    0% { transform: translateX(0); } /* Start from left */
+    100% { transform: translateX(-50%); } /* Move to left */
+}
+
+/* Section 8 End  */
+
+
+
+/* section 10 Start  */
+.img-fluid1 {
+    width: 100%; /* Container ke width ke hisaab se scale karega */
+    height: 350px; /* Aap yahan apni desired height set kar sakte hain */
+    object-fit: cover; /* Yeh image ko crop karega taaki wo specified dimensions ko maintain kare */
+    padding: 10px;
+}
+
+.img-fluid2
+{
+    max-height: 100%;
+    height: 500px;
+    /* max-width: 300px; */
+    object-fit: cover;
+}
+.carousel-item .img-fluid1{
+    width:100%;
+    height: auto;
+    /* max-height: 300px; */
+    object-fit: cover;
+}
+.carousel-item p {
+    font-family: Georgia, 'Times New Roman', Times, serif; /* Font family */
+    font-size: 20px; /* Font size */
+    text-align: center; /* Center align the text */
+    margin-top: 10px; /* Space between image and text */
+    margin-bottom: 0; /* Remove bottom margin */
+    font-weight: 800;
+}
+/* section 10 End  */
+
+/* section 11 Start  */
+.image-zoom {
+    overflow: hidden; /* Ensure the image doesn't overflow */
+}
+
+.image-zoom img {
+    transition: transform 0.5s ease; /* Smooth transition for zoom effect */
+}
+
+.image-zoom:hover img {
+    transform: scale(1.05); /* Zoom in the image on hover */
+}
+/* section 11 End  */
+
+/* section 12 start  */
+.page
+{
+    text-decoration: none;
+    color: #000;
+}
+/* section 12 End  */
+
+/* Footer Start  */
+footer a {
+    transition: color 0.3s ease;
+    text-decoration: none; /* Remove underline from links */
+}
+
+footer a:hover {
+    color: #fff; /* Lighten color on hover */
+}
+footer .small {
+    font-size: 0.9em; /* Smaller font size for menu items */
+}
+
+footer .light {
+    color: #bbb; /* Lighten the color of the text */
+}
+.iconn:hover
+{
+    color: #fff;
+}
+/* Footer End  */
+
+
+
+
+
+/* External Page CSS  Start*/
+.backimage
+{
+    position: relative;
+    height: 400px;
+    background-size: cover;
+    background-position:center;
+}
+ .overlay
+ {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+ }
+ .text
+ {
+    position: relative;
+    z-index: 1;
+    color: white;
+    text-align: center;
+    top: 70%;
+    transform: translateY(-50%);
+    font-size: 2.5rem;
+ }
+
+/* Ends  */
+
+
+/* Contact US Start  */
+
+
+.outer {
+    position: relative; /* Ensure the outer container is positioned */
+}
+
+
+.contactus
+{
+    position: relative;
+    height: auto;
+    width: 100%;
+    z-index: 2;
+    margin-top: 80px;
+    padding: 40px 100px;
+    /* background: linear-gradient( 90deg,white 0%, white 30%, #b2cfdc 30%,#b2cfdc 100%); */
+
+    
+}
+.contactus.title
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+
+}
+.contactus.title h2
+{
+    color: white;
+    font-weight: 500;
+    
+}
+
+.contact{
+    padding: 40px;
+    background: #fff;
+    /* box-shadow: 0 5px 35px #363639; */
+
+}
+.form{
+    grid-area: form;
+}
+
+.info{
+    grid-area:info;
+}
+ .box{
+    position: relative;
+    display: grid;
+    grid-template-columns: 2fr 4fr;
+    grid-template-rows: 4fr ;
+    grid-template-areas: "form info";
+    grid-gap: 30px;
+    margin-top: 40px;
+    
+ }
+ .contact h3
+ {
+    font-weight: 500;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+ }
+ /*   form   */
+ .formbox{
+    position: relative;
+    width: 100%;
+    
+ }
+ .formbox.row50
+ {
+    display: flex;
+    gap: 20px;
+
+ }
+ .inputbox{
+    display: flex;
+    flex-direction: column;
+    /* margin-bottom: 10px; */
+    width: 100%;
+    color: #b2cfdc ;
+ }
+  .inputbox.row100
+ {
+    width: 100%;
+    background: palevioletred;
+    
+    
+ }
+
+ .inputbox input{
+
+    padding: 10px;
+    font-size: 1rem;
+    /* border: 6px solid #b2cfdc ; */
+ 
+    
+ }
+ .inputbox textarea
+ {
+   
+    padding: 10PX;
+    width: 100%;
+    height: 100PX;
+    font-size: 1rem;;
+ }
+ .inputbox input[type="submit"]
+ {
+    background:#ccc;
+    color:white;
+    font-size: 1.1em;
+    max-width: 40%;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 7px 7px;
+    border-radius: 0%;
+    border:none;
+
+ }
+  .map h3{
+   font-size: 40px;
+   background-color: black;
+   color:#ccc;
+   text-align: center;
+   
+ }
+ .inputbox input[type="submit"]:hover {
+ 
+    color: white; 
+    border-radius: 15px;  
+}
+
+  .hr{
+    border: none;
+    height: 1px;
+    background-color: #000;
+    width: 100%;
+    margin: 20px 0;
+  }
+
+  .infobox p
+  {
+    font-size: 1rem;
+    color: #666;
+  }
+ /* Media Queries */
+@media (max-width: 768px) {
+   .contactus {
+       padding: 20px;
+   }
+
+   .contact {
+       padding: 20px;
+   }
+
+   .box {
+       grid-template-columns: 1fr;
+       grid-template-areas: "form" "info";
+   }
+
+   .inputbox {
+       width: 100%;
+   }
+
+   .inputbox.row50 {
+       flex-direction: column;
+   }
+
+   .inputbox input[type="submit"] {
+       width: 100%;
+   }
+}
+
+@media (max-width: 480px) {
+   .contactus.title h2 {
+       font-size: 1.5em;
+   }
+
+   .map h3 {
+       font-size: 30px;
+   }
+}
+/* Contact US End  */
+
+/* User Login Start  */
+.custom-padding {
+    padding: 35px;  
+}
+.spinner-border {
+    display: none; /* Hide spinner initially */
+}
+.hover-underline {
+    text-decoration: none; /* Remove default underline */
+}
+.hover-underline:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
+/* User Login End  */
+
+

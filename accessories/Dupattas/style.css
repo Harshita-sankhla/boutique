@@ -1,0 +1,27 @@
+.backimage
+{
+    position: relative;
+    height: 400px;
+    background-image: url(images/anarkali.jpg);
+    background-size: cover;
+    background-position: top;
+}
+ .overlay
+ {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+ }
+ .text
+ {
+    position: relative;
+    z-index: 1;
+    color: white;
+    text-align: center;
+    top: 70%;
+    transform: translateY(-50%);
+    font-size: 2.5rem;
+ }
