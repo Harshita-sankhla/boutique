@@ -6,6 +6,7 @@
     <!-- Font Awesome for Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="row section1">
         <div class="col-md-12 position-relative">
@@ -29,7 +30,7 @@
                             <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login.html"><i class="fas fa-user"></i></a> <!-- Login Icon -->
+                            <a class="nav-link" href="login.php"><i class="fas fa-user"></i></a> <!-- Login Icon -->
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fas fa-cart-plus"></i></a>
@@ -57,7 +58,7 @@
                                         class="fas fa-times"></i></button> <!-- Cross icon -->
                             </div>
                             <li class="nav-item">
-                                <a class="nav-link" href="login.html"><i class="fas fa-user"></i></a> <!-- Login Icon -->
+                                <a class="nav-link" href="login.php"><i class="fas fa-user"></i></a> <!-- Login Icon -->
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#"><i class="fas fa-cart-plus"></i></a>
@@ -93,19 +94,19 @@
                                     </div>
                                     <div class="col-md-4">
                                         <ul class="d-flex flex-column ">
-                                            <li><a href="casualco_ord.php">Co-ord sets</a></li> 
+                                            <li><a href="casualco_ord.php">Co-ord sets</a></li>
                                             <li><a href="casualkaftan.php">Kaftan</a></li>
-                                
+
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
                                         <ul class="d-flex flex-column ">
                                             <li><a href="casualjacket.php">Jackets</a></li>
                                             <li><a href="casualpallazo.php">Pallazos</a></li>
-    
+
                                         </ul>
                                     </div>
-                                </div>   
+                                </div>
                             </div>
                         </li>
                         <li class="nav-item">
@@ -126,16 +127,16 @@
                                         <ul class="d-flex flex-column ">
                                             <li> <a href="partylehenga.php"> Lehenga Choli </a></li>
                                             <li> <a href="partysaree.php"> Designer Saree </a> </li>
-                                
+
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
                                         <ul class="d-flex flex-column ">
-                                            <li> <a href="partygown.php"> Gowns </a> </li> 
+                                            <li> <a href="partygown.php"> Gowns </a> </li>
                                             <li> <a href="partykaftan.php"> Kaftan with bottoms </a></li>
                                         </ul>
                                     </div>
-                                </div>   
+                                </div>
                             </div>
                         </li>
                         <li class="nav-item">
@@ -162,12 +163,12 @@
                                             <li> <a href="accbag.php"> Bags </a></li>
                                         </ul>
                                     </div>
-                                </div>   
+                                </div>
                             </div>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="contact.html">Contact Us</a>
+                            <a class="nav-link active" aria-current="page" href="contact.php">Contact Us</a>
                         </li>
 
                     </ul>
@@ -175,5 +176,5 @@
 
             </nav>
         </div>
-    </div> 
+    </div>
 </body>
