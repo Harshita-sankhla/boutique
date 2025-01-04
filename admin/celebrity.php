@@ -5,6 +5,7 @@ include("config/session.php");
 if (isset($_POST['submit'])) {
     $image = $_FILES['image']['name'];         // Get the name of the uploaded image
     $tmpname = $_FILES['image']['tmp_name'];   // Temporary name of the uploaded file
+    $name = $_POST['name'];
 
     // Define the folder where you want to store the image
     $folder = "../images/umer/" . $image;
@@ -14,7 +15,8 @@ if (isset($_POST['submit'])) {
     // Move the uploaded file to the destination folder
     if (move_uploaded_file($tmpname, $folder)) {
         // Insert the file name into the database (not the path)
-        $sql = "INSERT INTO `carousel`(`image`) VALUES ('$image')";
+        $sql = "INSERT INTO `celebrity`(`image`,`name`) VALUES ('$image','$name')";
+
         $result = mysqli_query($conn, $sql);
 
         // Check if the database insertion was successfully
@@ -29,7 +31,7 @@ if (isset($_POST['submit'])) {
 }
 
 // Fetch data from the database
-$query = "SELECT * FROM carousel";
+$query = "SELECT * FROM `celebrity`";
 $res = mysqli_query($conn, $query);
 
 ?>
@@ -138,7 +140,7 @@ $res = mysqli_query($conn, $query);
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>Carousel </h2>
+                        <h2>celebrity </h2>
                     </div>
                 </div>
                 <!-- /. ROW  -->
@@ -151,8 +153,10 @@ $res = mysqli_query($conn, $query);
 
                             <label for="image">Upload Image:</label>
                             <input type="file" id="image" name="image" required><br><br>
+                            <label for="name"> Name :</label>
+                            <input type="text" id="name" name="name" required><br><br>
 
-                            <input type="submit" name="submit" value="Add Carousel">
+                            <input type="submit" name="submit" value="Add Celebrity">
                         </form>
 
                     </div>
@@ -169,6 +173,7 @@ $res = mysqli_query($conn, $query);
                                             <tr>
                                                 <th>Sno</th>
                                                 <th>Image</th>
+                                                <th>Name</th>
                                                 <th>Update</th>
                                                 <th>Delete</th>
                                             </tr>
@@ -182,6 +187,7 @@ $res = mysqli_query($conn, $query);
                                                     echo "<tr>";
                                                     echo "<td>" . $sno++ . "</td>";
                                                     echo "<td>" . $row['image'] . "</td>";
+                                                    echo "<td>" . $row['name'] . "</td>";
                                                     echo "<td class='button'><a href='form.php?uid=" . $row['sno'] . "'>
                                                         <button type='button'>Update</button></a></td>";
 

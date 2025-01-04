@@ -84,9 +84,9 @@
                         <i class="fa fa-dashboard fa-3x"></i> Dashboard <i class="fas fa-chevron-down"></i>
                     </button>
                     <div class="dropdown-content" id="dropdown1">
-                        <a href="subpage1.php">Carousel</a>
-                        <a href="subpage2.php">Subpage 2</a>
-                        <a href="subpage3.php">Subpage 3</a>
+                        <a href="carousel.php">Carousel</a>
+                        <a href="celebrity.php">Celebrity</a>
+                        <a href="collection.php">Collection</a>
                     </div>
                 </li>
                 <li onmouseover="showDropdown('dropdown2')" onmouseout="hideDropdown('dropdown2')">
@@ -94,11 +94,11 @@
                         <i class="fas fa-gem fa-3x"></i> Accessories <i class="fas fa-chevron-down"></i>
                     </button>
                     <div class="dropdown-content" id="dropdown2">
-                        <a href="subpage1.php">Bottoms</a>
-                        <a href="subpage2.php">Dupattas</a>
-                        <a href="subpage3.php">Earings</a>
-                        <a href="subpage3.php">Necklace</a>
-                        <a href="subpage3.php">Bags</a>
+                        <a href="bottom.php">Bottoms</a>
+                        <a href="dupatta.php">Dupattas</a>
+                        <a href="earing.php">Earings</a>
+                        <a href="necklace.php">Necklace</a>
+                        <a href="bag.php">Bags</a>
                     </div>
                 </li>
                 <li onmouseover="showDropdown('dropdown3')" onmouseout="hideDropdown('dropdown3')">
@@ -106,13 +106,13 @@
                         <i class="fas fa-glass-martini-alt fa-3x"></i> Party Wear <i class="fas fa-chevron-down"></i>
                     </button>
                     <div class="dropdown-content" id="dropdown3">
-                        <a href="subpage1.php">Gowns</a>
-                        <a href="subpage2.php">Anarkali</a>
-                        <a href="subpage3.php">Lehengas</a>
-                        <a href="subpage3.php">Co-ord sets</a>
-                        <a href="subpage3.php">Indo Western</a>
-                        <a href="subpage3.php">Designer Saree</a>
-                        <a href="subpage3.php">Kaftan with bottoms</a>
+                        <a href="partygown.php">Gowns</a>
+                        <a href="partyanarkali.php">Anarkali</a>
+                        <a href="partylehenga.php">Lehengas</a>
+                        <a href="partyco_ord.php">Co-ord sets</a>
+                        <a href="partywestern.php">Indo Western</a>
+                        <a href="partysaree.php">Designer Saree</a>
+                        <a href="psrtykaftan.php">Kaftan with bottoms</a>
                     </div>
                 </li>
 
@@ -121,20 +121,20 @@
                         <i class="fas fa-tshirt fa-3x"></i> Casual Wear <i class="fas fa-chevron-down"></i>
                     </button>
                     <div class="dropdown-content" id="dropdown4">
-                        <a href="subpage1.php">Kurtas</a>
-                        <a href="subpage2.php">Frocks</a>
-                        <a href="subpage3.php">Gowns</a>
-                        <a href="subpage3.php">Kaftan</a>
-                        <a href="subpage3.php">Jackets</a>
-                        <a href="subpage3.php">Pallazos</a>
-                        <a href="subpage3.php">Co-ord sets</a>
+                        <a href="casualkurta.php">Kurtas</a>
+                        <a href="casualfrock.php">Frocks</a>
+                        <a href="casualgown.php">Gowns</a>
+                        <a href="casualkaftan.php">Kaftan</a>
+                        <a href="casualjacket.php">Jackets</a>
+                        <a href="casualpallazo.php">Pallazos</a>
+                        <a href="casualco_ord.php">Co-ord sets</a>
                     </div>
                 </li>
-                <li c style="border:1px solid #aaa ; padding:7px;">
-                    <a href="contacts.php"><i class="fa fa-desktop fa-3x"></i> Contact</a>
-                </li>
                 <li style="border:1px solid #aaa; padding:7px;">
-                    <a href="review.php"><i class="fas fa-gift fa-3x"></i>New Arrival</a>
+                    <a href="arrival.php"><i class="fas fa-gift fa-3x"></i>New Arrival</a>
+                </li>
+                <li c style="border:1px solid #aaa ; padding:7px;">
+                    <a href="contact.php"><i class="fa fa-desktop fa-3x"></i> Contact</a>
                 </li>
             </ul>
 

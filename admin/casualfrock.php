@@ -3,34 +3,59 @@ include("config/connection.php");
 include("config/session.php");
 
 if (isset($_POST['submit'])) {
-    $image = $_FILES['image']['name'];         // Get the name of the uploaded image
-    $tmpname = $_FILES['image']['tmp_name'];   // Temporary name of the uploaded file
+    // Get the uploaded images
+    $image1 = $_FILES['image1']['name'];         // Name of the first uploaded image
+    $tmpname1 = $_FILES['image1']['tmp_name'];   // Temporary name of the first uploaded file
 
-    // Define the folder where you want to store the image
-    $folder = "../images/umer/" . $image;
+    $image2 = $_FILES['image2']['name'];         // Name of the second uploaded image
+    $tmpname2 = $_FILES['image2']['tmp_name'];   // Temporary name of the second uploaded file
 
+    // Get the name and price from the form
+    $name = $_POST['name'];
+    $price = $_POST['price'];
 
+    // Define the folder where you want to store the images
+    $folder1 = "../images/umer/" . $image1;
+    $folder2 = "../images/umer/" . $image2;
 
-    // Move the uploaded file to the destination folder
-    if (move_uploaded_file($tmpname, $folder)) {
-        // Insert the file name into the database (not the path)
-        $sql = "INSERT INTO `carousel`(`image`) VALUES ('$image')";
-        $result = mysqli_query($conn, $sql);
-
-        // Check if the database insertion was successfully
-        if ($result) {
-            echo "File uploaded and database entry created successfully!";
+    // If both images are uploaded successfully
+    if (move_uploaded_file($tmpname1, $folder1) && move_uploaded_file($tmpname2, $folder2)) {
+        if (isset($_GET['uid'])) {
+            // Update the record
+            $uid = $_GET['uid'];
+            $sql = "UPDATE `casualfrock` SET `image1`='$image1', `image2`='$image2', `name`='$name', `price`='$price' WHERE `sno`='$uid'";
+            $result = mysqli_query($conn, $sql);
+            if ($result) {
+                echo "Record updated successfully!<br>";
+            } else {
+                echo "Error updating the record.<br>";
+            }
         } else {
-            echo "Error inserting into database.";
+            // Insert new record
+            $sql = "INSERT INTO `casualfrock`(`image1`, `image2`, `name`, `price`) VALUES ('$image1', '$image2', '$name', '$price')";
+            $result = mysqli_query($conn, $sql);
+            if ($result) {
+                echo "Files '$image1' and '$image2' uploaded and database entry created successfully!<br>";
+            } else {
+                echo "Error inserting images into database.<br>";
+            }
         }
     } else {
-        echo "Failed to upload the image.";
+        echo "Failed to upload images.<br>";
     }
 }
 
-// Fetch data from the database
-$query = "SELECT * FROM carousel";
+// Fetch data from the database for displaying
+$query = "SELECT * FROM `casualfrock`";
 $res = mysqli_query($conn, $query);
+
+// If 'uid' is set, fetch the record to update it
+if (isset($_GET['uid'])) {
+    $uid = $_GET['uid'];
+    $editQuery = "SELECT * FROM `casualfrock` WHERE `sno` = '$uid'";
+    $editResult = mysqli_query($conn, $editQuery);
+    $editRow = mysqli_fetch_assoc($editResult);
+}
 
 ?>
 <!DOCTYPE html>
@@ -138,7 +163,7 @@ $res = mysqli_query($conn, $query);
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>Carousel </h2>
+                        <h2>Frock </h2>
                     </div>
                 </div>
                 <!-- /. ROW  -->
@@ -149,10 +174,16 @@ $res = mysqli_query($conn, $query);
                     <div class="col-md-6">
                         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" enctype="multipart/form-data">
 
-                            <label for="image">Upload Image:</label>
-                            <input type="file" id="image" name="image" required><br><br>
+                            <label for="image1">Upload Image1:</label>
+                            <input type="file" id="image1" name="image1" <?php echo isset($editRow) ? '' : 'required'; ?>><br><br>
+                            <label for="image2">Upload Image2:</label>
+                            <input type="file" id="image2" name="image2" <?php echo isset($editRow) ? '' : 'required'; ?>><br><br>
+                            <label for="name"> Name :</label>
+                            <input type="text" id="name" name="name" value="<?php echo isset($editRow) ? $editRow['name'] : ''; ?>" required><br><br>
+                            <label for="price"> Price :</label>
+                            <input type="text" id="price" name="price" value="<?php echo isset($editRow) ? $editRow['price'] : ''; ?>" required><br><br>
 
-                            <input type="submit" name="submit" value="Add Carousel">
+                            <input type="submit" name="submit" value="<?php echo isset($editRow) ? 'Update' : 'Add Frock'; ?>">
                         </form>
 
                     </div>
@@ -168,7 +199,10 @@ $res = mysqli_query($conn, $query);
                                         <thead>
                                             <tr>
                                                 <th>Sno</th>
-                                                <th>Image</th>
+                                                <th>Image1</th>
+                                                <th>Image2</th>
+                                                <th>Name</th>
+                                                <th>Price</th>
                                                 <th>Update</th>
                                                 <th>Delete</th>
                                             </tr>
@@ -181,8 +215,11 @@ $res = mysqli_query($conn, $query);
                                                 while ($row = mysqli_fetch_assoc($res)) {
                                                     echo "<tr>";
                                                     echo "<td>" . $sno++ . "</td>";
-                                                    echo "<td>" . $row['image'] . "</td>";
-                                                    echo "<td class='button'><a href='form.php?uid=" . $row['sno'] . "'>
+                                                    echo "<td>" . $row['image1'] . "</td>";
+                                                    echo "<td>" . $row['image2'] . "</td>";
+                                                    echo "<td>" . $row['name'] . "</td>";
+                                                    echo "<td>" . $row['price'] . "</td>";
+                                                    echo "<td class='button'><a href='?uid=" . $row['sno'] . "'>
                                                         <button type='button'>Update</button></a></td>";
 
                                                     echo "<td class='delete-button'><a href='delete.php?id=" . $row['sno'] . "'>
