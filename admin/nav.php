@@ -1,6 +1,7 @@
 <html>
 
 <head>
+
     <style>
         .btn {
             color: white;
@@ -112,7 +113,7 @@
                         <a href="partyco_ord.php">Co-ord sets</a>
                         <a href="partywestern.php">Indo Western</a>
                         <a href="partysaree.php">Designer Saree</a>
-                        <a href="psrtykaftan.php">Kaftan with bottoms</a>
+                        <a href="partykaftan.php">Kaftan with bottoms</a>
                     </div>
                 </li>
 

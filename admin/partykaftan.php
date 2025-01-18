@@ -10,7 +10,7 @@ if (isset($_GET['delete_id'])) {
     $id = $_GET['delete_id'];
 
     // Fetch record to get image file names before deletion
-    $fetchQuery = "SELECT image1, image2 FROM casualkaftan WHERE sno = '$id'";
+    $fetchQuery = "SELECT image1, image2 FROM partykaftan WHERE sno = '$id'";
     $fetchResult = mysqli_query($conn, $fetchQuery);
 
     if (mysqli_num_rows($fetchResult) > 0) {
@@ -29,7 +29,7 @@ if (isset($_GET['delete_id'])) {
         }
 
         // Delete the record from the database
-        $deleteQuery = "DELETE FROM casualkaftan WHERE sno = '$id'";
+        $deleteQuery = "DELETE FROM partykaftan WHERE sno = '$id'";
         if (mysqli_query($conn, $deleteQuery)) {
             $successMessage = "Record deleted successfully!";
         } else {
@@ -61,7 +61,7 @@ if (isset($_POST['submit'])) {
         $uid = $_POST['uid'];
 
         // Fetch the current record from the database to retain the existing images if no new ones are uploaded
-        $fetchQuery = "SELECT image1, image2 FROM casualkaftan WHERE sno = '$uid'";
+        $fetchQuery = "SELECT image1, image2 FROM partykaftan WHERE sno = '$uid'";
         $fetchResult = mysqli_query($conn, $fetchQuery);
         if ($fetchResult && mysqli_num_rows($fetchResult) > 0) {
             $record = mysqli_fetch_assoc($fetchResult);
@@ -90,7 +90,7 @@ if (isset($_POST['submit'])) {
             }
 
             // Update record in the database with the new or retained image paths
-            $sql = "UPDATE `casualkaftan` SET `image1`='$image1', `image2`='$image2', `name`='$name', `price`='$price' WHERE `sno`='$uid'";
+            $sql = "UPDATE `partykaftan` SET `image1`='$image1', `image2`='$image2', `name`='$name', `price`='$price' WHERE `sno`='$uid'";
             $result = mysqli_query($conn, $sql);
             if ($result) {
                 $successMessage = "Record updated successfully!";
@@ -103,7 +103,7 @@ if (isset($_POST['submit'])) {
     } else {
         // Insert new record if no 'uid' is provided
         if (!empty($image1) && move_uploaded_file($tmpname1, $folder1) && !empty($image2) && move_uploaded_file($tmpname2, $folder2)) {
-            $sql = "INSERT INTO `casualkaftan`(`image1`, `image2`, `name`, `price`) VALUES ('$image1', '$image2', '$name', '$price')";
+            $sql = "INSERT INTO `partykaftan`(`image1`, `image2`, `name`, `price`) VALUES ('$image1', '$image2', '$name', '$price')";
             $result = mysqli_query($conn, $sql);
             if ($result) {
                 $successMessage = "Record added successfully!";
@@ -117,13 +117,13 @@ if (isset($_POST['submit'])) {
 }
 
 // Fetch products from the database
-$query = "SELECT * FROM `casualkaftan`";
+$query = "SELECT * FROM `partykaftan`";
 $res = mysqli_query($conn, $query);
 
 // If 'uid' is set, fetch the record to update it
 if (isset($_GET['uid'])) {
     $uid = $_GET['uid'];
-    $editQuery = "SELECT * FROM `casualkaftan` WHERE `sno` = '$uid'";
+    $editQuery = "SELECT * FROM `partykaftan` WHERE `sno` = '$uid'";
     $editResult = mysqli_query($conn, $editQuery);
     $editRow = mysqli_fetch_assoc($editResult);
 }
@@ -264,7 +264,7 @@ if (isset($_GET['uid'])) {
                                 <input type="hidden" name="uid" value="<?php echo $editRow['sno']; ?>" />
                             <?php endif; ?>
 
-                            <input type="submit" name="submit" value="<?php echo isset($editRow) ? 'Update' : 'Add Kaftan'; ?>">
+                            <input type="submit" name="submit" value="<?php echo isset($editRow) ? 'Update' : 'Add kaftan'; ?>">
                         </form>
                     </div>
 
