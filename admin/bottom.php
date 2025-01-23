@@ -1,50 +1,126 @@
 <?php
-include("config/connection.php");
-include("config/session.php");
+include("config/connection.php"); // Include database connection
+include("config/session.php"); // Include session for admin login check
 
-if (isset($_POST['submit'])) {
-    $image = $_FILES['image']['name'];         // Get the name of the uploaded image
-    $tmpname = $_FILES['image']['tmp_name'];   // Temporary name of the uploaded file
-    $name = $_POST['name'];
-    $price = $_POST['price'];
+$successMessage = ''; // Initialize success message
 
-    // Define the folder where you want to store the image
-    $folder = "../images/umer/" . $image;
+// Fetch products from the database
+$query = "SELECT * FROM bottom";
+$res = mysqli_query($conn, $query);
 
+if (isset($_GET['delete_id'])) {
+    $id = $_GET['delete_id'];
 
+    // Fetch record to get image file names before deletion
+    $fetchQuery = "SELECT image FROM bottom WHERE sno = '$id'";
+    $fetchResult = mysqli_query($conn, $fetchQuery);
 
-    // Move the uploaded file to the destination folder
-    if (move_uploaded_file($tmpname, $folder)) {
-        // Insert the file name into the database (not the path)
-        $sql = "INSERT INTO `bottom`(`image`,`name`,`price` ) VALUES ('$image','$name','$price')";
+    if (mysqli_num_rows($fetchResult) > 0) {
+        $record = mysqli_fetch_assoc($fetchResult);
+        $imagePath = "images/" . $record['image'];
 
-        $result = mysqli_query($conn, $sql);
+        // Delete images from the server
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
+        }
 
-        // Check if the database insertion was successfully
-        if ($result) {
-            echo "File uploaded and database entry created successfully!";
+        // Delete the record from the database
+        $deleteQuery = "DELETE FROM bottom WHERE sno = '$id'";
+        if (mysqli_query($conn, $deleteQuery)) {
+            $_SESSION['successMessage'] = "Record deleted successfully!";
+            header("Location: bottom.php");
+            exit();
         } else {
-            echo "Error inserting into database.";
+            echo "Error deleting record: " . mysqli_error($conn);
         }
     } else {
-        echo "Failed to upload the image.";
+        echo "Record not found.";
     }
 }
 
-// Fetch data from the database
-$query = "SELECT * FROM `bottom`";
-$res = mysqli_query($conn, $query);
+// Form submission for adding or updating products
+if (isset($_POST['submit'])) {
+    $name = $_POST['name'];
+    $price = $_POST['price'];
 
+    $image = $_FILES['image']['name'];  // Get the uploaded image name
+    $tmpname = $_FILES['image']['tmp_name'];  // Get the temporary file name
 
+    // Define the folder where images will be stored
+    $folder = "images/" . $image;
 
+    // Check if updating an existing record
+    if (!empty($_POST['uid'])) {
+        $uid = $_POST['uid'];
+
+        // Fetch the current record to retain existing image if no new one is uploaded
+        $fetchQuery = "SELECT image FROM bottom WHERE sno = '$uid'";
+        $fetchResult = mysqli_query($conn, $fetchQuery);
+        if ($fetchResult && mysqli_num_rows($fetchResult) > 0) {
+            $record = mysqli_fetch_assoc($fetchResult);
+
+            // If no new image uploaded, retain the old image path
+            if (empty($image)) {
+                $image = $record['image'];
+            }
+
+            // Move uploaded file to server if new image is uploaded
+            if (!empty($image) && move_uploaded_file($tmpname, $folder)) {
+                // Optionally delete old image if a new image is uploaded
+                if (file_exists("images/" . $record['image']) && !empty($image)) {
+                    unlink("images/" . $record['image']);
+                }
+            }
+
+            // Update record in the database with the new or retained image paths
+            $sql = "UPDATE `bottom` SET `image`='$image', `name`='$name', `price`='$price' WHERE `sno`='$uid'";
+            $result = mysqli_query($conn, $sql);
+            if ($result) {
+                $_SESSION['successMessage'] = "Record updated successfully!";
+                header("Location: bottom.php");
+                exit();
+            } else {
+                echo "Error updating record.";
+            }
+        } else {
+            echo "Record not found!";
+        }
+    } else {
+        // Insert new record if no 'uid' is provided
+        if (!empty($image) && move_uploaded_file($tmpname, $folder)) {
+            $sql = "INSERT INTO `bottom`(`image`,`name`,`price`) VALUES ('$image','$name','$price')";
+            $result = mysqli_query($conn, $sql);
+            if ($result) {
+                $_SESSION['successMessage'] = "Record added successfully!";
+                header("Location: bottom.php");
+                exit();
+            } else {
+                echo "Error adding record.";
+            }
+        } else {
+            echo "Failed to upload image.";
+        }
+    }
+}
+
+// If 'uid' is set, fetch the record to update it
+if (isset($_GET['uid'])) {
+    $uid = $_GET['uid'];
+    $editQuery = "SELECT * FROM `bottom` WHERE `sno` = '$uid'";
+    $editResult = mysqli_query($conn, $editQuery);
+    $editRow = mysqli_fetch_assoc($editResult);
+}
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <!-- Include DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
     <!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FONTAWESOME STYLES-->
@@ -52,11 +128,12 @@ $res = mysqli_query($conn, $query);
     <!-- CUSTOM STYLES-->
     <link href="assets/css/custom.css" rel="stylesheet" />
     <!-- GOOGLE FONTS-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-
+    <!-- Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     <style>
         h2 {
             text-align: center;
@@ -102,141 +179,134 @@ $res = mysqli_query($conn, $query);
             color: #fff;
         }
 
-        /* Button style for Update and Delete */
-        .button {
-            width: 100%;
-            /* max-height: 100px; */
-            display: inline-block;
-            text-decoration: none;
+        .operation {
+            text-align: center;
         }
 
-        .button button {
+        .upt {
             background-color: green;
-            color: white;
-            font-size: 15px;
+            color: #fff;
+            height: 40px;
+            width: 90px;
+            margin: 10px;
             border: none;
-            cursor: pointer;
-            padding: 10px;
-            width: 100%;
+
         }
 
-        .delete-button button {
+        .del {
             background-color: red;
-            color: white;
-            font-size: 15px;
+            color: #fff;
+            height: 40px;
+            width: 90px;
             border: none;
-            cursor: pointer;
-            padding: 10px;
-            width: 100%;
         }
     </style>
 </head>
 
 <body>
     <div id="wrapper">
-        <?php
-        include("nav.php");
-        ?>
+        <?php include("nav.php"); ?>
 
-        <!-- /. NAV SIDE  -->
         <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>Bottoms </h2>
+                        <h2> Bottoms </h2>
                     </div>
                 </div>
-                <!-- /. ROW  -->
+
                 <hr />
 
                 <div class="row">
-                    <!-- Form  -->
+                    <!-- Product form -->
                     <div class="col-md-6">
                         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" enctype="multipart/form-data">
-
                             <label for="image">Upload Image:</label>
-                            <input type="file" id="image" name="image" required><br><br>
-                            <label for="name"> Name :</label>
-                            <input type="text" id="name" name="name" required><br><br>
-                            <label for="price"> Price :</label>
-                            <input type="text" id="price" name="price" required><br><br>
+                            <input type="file" id="image" name="image">
+                            <?php if (isset($editRow)) { ?> <label><?php echo isset($editRow) ? $editRow['image'] : ''; ?></label>
+                            <?php } ?>
+                            <br><br>
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" name="name" value="<?php echo isset($editRow) ? $editRow['name'] : ''; ?>" required>
+                            <br><br>
+                            <label for="price">Price:</label>
+                            <input type="text" id="price" name="price" value="<?php echo isset($editRow) ? $editRow['price'] : ''; ?>" required>
+                            <br><br>
+                            <?php if (isset($editRow)): ?>
+                                <input type="hidden" name="uid" value="<?php echo $editRow['sno']; ?>" />
+                            <?php endif; ?>
 
-                            <input type="submit" name="submit" value="Add Bottom">
+                            <input type="submit" name="submit" value="<?php echo isset($editRow) ? 'Update' : 'Add Bottom'; ?>">
                         </form>
-
                     </div>
-                    <!-- Advanced Tables -->
-                    <div class="col-md-6" style="border-left:1px solid #ddd" ;>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                Reservation Tables
-                            </div>
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                        <thead>
-                                            <tr>
-                                                <th>Sno</th>
-                                                <th>Image</th>
-                                                <th>Name</th>
-                                                <th>price</th>
-                                                <th>Update</th>
-                                                <th>Delete</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            // Display the fetched data
-                                            if (mysqli_num_rows($res) > 0) {
-                                                $sno = 1;
-                                                while ($row = mysqli_fetch_assoc($res)) {
-                                                    echo "<tr>";
-                                                    echo "<td>" . $sno++ . "</td>";
-                                                    echo "<td>" . $row['image'] . "</td>";
-                                                    echo "<td>" . $row['name'] . "</td>";
-                                                    echo "<td>" . $row['price'] . "</td>";
-                                                    echo "<td class='button'><a href='form.php?uid=" . $row['sno'] . "'>
-                                                        <button type='button'>Update</button></a></td>";
 
-                                                    echo "<td class='delete-button'><a href='delete.php?id=" . $row['sno'] . "'>
-                                                        <button type='button'>Delete</button></a></td>";
-                                                    echo "</tr>";
-                                                }
-                                            } else {
-                                                echo "<tr><td colspan='7'>No records found.</td></tr>";
-                                            }
-                                            ?>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
+                    <div class="col-md-6" style="border-left:1px solid #ddd;">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>Sno</th>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Operations</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $i = 1;
+                                    while ($row = mysqli_fetch_assoc($res)) { ?>
+                                        <tr class="operation">
+                                            <td><?php echo $i; ?></td>
+                                            <td><img src="images/<?php echo $row['image']; ?>" alt="Image" style="width: 100px; height: 80px;"></td>
+                                            <td><?php echo $row['name']; ?></td>
+                                            <td><?php echo $row['price']; ?></td>
+                                            <td>
+                                                <a href="?uid=<?php echo $row['sno']; ?>"><button type="button" class="upt">Update</button></a>
+                                                <a href="?delete_id=<?php echo $row['sno']; ?>"><button type="button" class="del" onclick="return confirmDelete()">Delete</button></a>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                        $i++;
+                                    } ?>
+                                </tbody>
+                            </table>
                         </div>
+
+                        <!-- DataTables Initialization -->
+                        <script>
+                            $(document).ready(function() {
+                                $('#dataTables-example').DataTable();
+                            });
+                        </script>
                     </div>
                 </div>
 
-
-                <!-- /. ROW  -->
-
             </div>
-            <!-- /. PAGE INNER  -->
         </div>
-        <!-- /. PAGE WRAPPER  -->
     </div>
-    <!-- /. WRAPPER  -->
-    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
-    <!-- JQUERY SCRIPTS -->
+
     <script src="assets/js/jquery-1.10.2.js"></script>
-    <!-- BOOTSTRAP SCRIPTS -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <!-- Include DataTables JS -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
     <script src="assets/js/bootstrap.min.js"></script>
-    <!-- METISMENU SCRIPTS -->
     <script src="assets/js/jquery.metisMenu.js"></script>
-    <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
+    <script>
+        // Display success message using Toastr
+        <?php if (isset($_SESSION['successMessage'])): ?>
+            toastr.success('<?php echo $_SESSION['successMessage']; ?>');
+            <?php unset($_SESSION['successMessage']); ?>
+        <?php endif; ?>
 
-
+        // Confirm before delete
+        function confirmDelete() {
+            return confirm('Are you sure you want to delete this record?');
+        }
+    </script>
 </body>
 
 </html>

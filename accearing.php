@@ -1,28 +1,29 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Anarkali</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <!-- Main Style CSS -->
-        <link rel="stylesheet" href="css/style.css">
-        <!-- Font Awesome for Icons -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    </head>
-    
-    <body>
-         <!-- section header  Start  -->
-        <div class="container-fluid outer">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Anarkali</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- section header  Start  -->
+    <div class="container-fluid outer">
         <?php
-            include("header.php")
+        include("header.php")
         ?>
-        </div>
-        <!-- section  header End  -->
-    
+    </div>
+    <!-- section  header End  -->
+
     <!-- section 1 Start  -->
-    <div class="container-fluid backimage">
+    <div class="container-fluid backimage" style=" background-image: url(images/accearing.jpg);">
         <div class="overlay"></div> <!-- Increased overlay opacity -->
         <div class="text"> <!-- Changed text color to yellow -->
             <h1> <b>EARINGS</b> </h1> <!-- Increased font size -->
@@ -39,7 +40,7 @@
                 <span class="mt-0 product-price">Rs. 18,000.00</span>
             </div>
             <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accearing12.jpg" class="img-fluid  fixed-height"  alt="">
+                <img src="images/accearing12.jpg" class="img-fluid  fixed-height" alt="">
                 <h6 class="mt-3 product-name">NAL-4</h6>
                 <del class="mt-0 product-price">Rs. 28,000.00</del>
                 <span class="mt-0 px-2 product-price">Rs. 14,000.00</span>
@@ -55,7 +56,7 @@
                 <span class="mt-0 product-price">Rs. 34,000.00</span>
             </div>
         </div>
-    </div>   
+    </div>
     <!-- section 2 End   -->
 
     <!-- section 3 Start  -->
@@ -67,7 +68,7 @@
                 <span class="mt-0 product-price">Rs. 18,000.00</span>
             </div>
             <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accearing22.jpg" class="img-fluid  fixed-height"  alt="">
+                <img src="images/accearing22.jpg" class="img-fluid  fixed-height" alt="">
                 <h6 class="mt-3 product-name">NAL-4</h6>
                 <del class="mt-0 product-price">Rs. 28,000.00</del>
                 <span class="mt-0 px-2 product-price">Rs. 14,000.00</span>
@@ -83,7 +84,7 @@
                 <span class="mt-0 product-price">Rs. 34,000.00</span>
             </div>
         </div>
-    </div>   
+    </div>
     <!-- section 3 End   -->
 
     <!-- section 4 Start  -->
@@ -95,7 +96,7 @@
                 <span class="mt-0 product-price">Rs. 18,000.00</span>
             </div>
             <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accearing32.jpg" class="img-fluid  fixed-height"  alt="">
+                <img src="images/accearing32.jpg" class="img-fluid  fixed-height" alt="">
                 <h6 class="mt-3 product-name">NAL-4</h6>
                 <del class="mt-0 product-price">Rs. 28,000.00</del>
                 <span class="mt-0 px-2 product-price">Rs. 14,000.00</span>
@@ -111,7 +112,7 @@
                 <span class="mt-0 product-price">Rs. 34,000.00</span>
             </div>
         </div>
-    </div> 
+    </div>
     <!-- section 4 End   -->
 
     <!-- section 5 Start  -->
@@ -123,7 +124,7 @@
                 <span class="mt-0 product-price">Rs. 18,000.00</span>
             </div>
             <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accearing42.jpg" class="img-fluid  fixed-height"  alt="">
+                <img src="images/accearing42.jpg" class="img-fluid  fixed-height" alt="">
                 <h6 class="mt-3 product-name">NAL-4</h6>
                 <del class="mt-0 product-price">Rs. 28,000.00</del>
                 <span class="mt-0 px-2 product-price">Rs. 14,000.00</span>
@@ -139,7 +140,7 @@
                 <span class="mt-0 product-price">Rs. 34,000.00</span>
             </div>
         </div>
-    </div>   
+    </div>
     <!-- section 5 End   -->
 
     <!-- section 6 Start  -->
@@ -151,7 +152,7 @@
                 <span class="mt-0 product-price">Rs. 18,000.00</span>
             </div>
             <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accearing52.jpg" class="img-fluid  fixed-height"  alt="">
+                <img src="images/accearing52.jpg" class="img-fluid  fixed-height" alt="">
                 <h6 class="mt-3 product-name">NAL-4</h6>
                 <del class="mt-0 product-price">Rs. 28,000.00</del>
                 <span class="mt-0 px-2 product-price">Rs. 14,000.00</span>
@@ -167,12 +168,12 @@
                 <span class="mt-0 product-price">Rs. 34,000.00</span>
             </div>
         </div>
-    </div>   
+    </div>
     <!-- section 6 End   -->
 
     <!-- footer Start   -->
     <?php
-        include("footer.php")
+    include("footer.php")
     ?>
     <!-- footer End  -->
 

@@ -1,3 +1,10 @@
+<?php
+include("admin/config/connection.php");
+
+// Fetch products from the database
+$query = "SELECT image1,image2,name,price FROM casualkurta";
+$res = mysqli_query($conn, $query);
+?>
 <!doctype html>
 <html lang="en">
 
@@ -14,14 +21,14 @@
 </head>
 
 <body>
-     <!-- section header  Start  -->
-     <div class="container-fluid outer">
-     <?php
+    <!-- section header  Start  -->
+    <div class="container-fluid outer">
+        <?php
         include("header.php")
-    ?>
+        ?>
     </div>
     <!-- section  header End  -->
-    
+
     <!-- section 1 Start  -->
     <div class="container-fluid backimage" style=" background-image: url(images/casualkurta.jpg);">
         <div class="overlay"></div> <!-- Increased overlay opacity -->
@@ -30,6 +37,31 @@
         </div>
     </div>
     <!-- section 1 End  -->
+
+    <div class="container-fluid">
+        <div class="row section3 py-5 px-2" style="padding-bottom:15px;">
+            <?php
+            // Step 3: Loop through the fetched data and display each product
+            if ($res->num_rows > 0) {
+                while ($row = $res->fetch_assoc()) {
+                    $image1 = $row['image1']; // Main image
+                    $image2 = $row['image2']; // Hover image
+                    $name = $row['name'];
+                    $price = $row['price'];
+
+                    // Display each product in the HTML structure
+                    echo '<div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in py-4">';
+                    echo '<img src="admin/images/' . $image1 . '" class="img-fluid hover-image fixed-height" data-hover="admin/images/' . $image2 . '" alt="' . $name . '">';
+                    echo '<h6 class="mt-3 product-name">' . $name . '</h6>';
+                    echo '<span class="mt-0 px-2 product-price">Rs. ' . $price . '</span>';
+                    echo '</div>';
+                }
+            } else {
+                echo "No products found!";
+            }
+            ?>
+        </div>
+    </div>
 
     <!-- section 2 Start  -->
     <div class="container-fluid">
@@ -60,7 +92,7 @@
                 <span class="mt-0 product-price">Rs. 34,000.00</span>
             </div>
         </div>
-    </div>   
+    </div>
     <!-- section 2 End   -->
 
     <!-- section 3 Start  -->
@@ -92,7 +124,7 @@
                 <span class="mt-0 product-price">Rs. 34,000.00</span>
             </div>
         </div>
-    </div>   
+    </div>
     <!-- section 3 End   -->
 
     <!-- section 4 Start  -->
@@ -124,7 +156,7 @@
                 <span class="mt-0 product-price">Rs. 34,000.00</span>
             </div>
         </div>
-    </div>   
+    </div>
     <!-- section 4 End   -->
 
     <!-- section 5 Start  -->
@@ -156,7 +188,7 @@
                 <span class="mt-0 product-price">Rs. 34,000.00</span>
             </div>
         </div>
-    </div>   
+    </div>
     <!-- section 5 End   -->
 
     <!-- section 6 Start  -->
@@ -188,12 +220,12 @@
                 <span class="mt-0 product-price">Rs. 34,000.00</span>
             </div>
         </div>
-    </div>   
+    </div>
     <!-- section 6 End   -->
 
     <!-- footer Start   -->
     <?php
-        include("footer.php")
+    include("footer.php")
     ?>
     <!-- footer End  -->
 

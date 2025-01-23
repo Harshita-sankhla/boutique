@@ -1,3 +1,8 @@
+<?php
+$reslogin = "select * from login";
+$reslog = mysqli_query($conn, $reslogin);
+$log = mysqli_fetch_assoc($reslog);
+?>
 <html>
 
 <head>
@@ -68,7 +73,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="home.php">Harshika</a>
+            <a class="navbar-brand" href="carousel.php"><?php echo $log['username']; ?></a>
         </div>
         <div style="color: white; padding: 15px 50px 5px 50px; float: right; font-size: 16px;"> <a href="logout.php" class="btn btn-danger square-btn-adjust">Logout</a>
         </div>
@@ -77,7 +82,7 @@
         <div class="sidebar-collapse">
             <ul class="nav" id="main-menu">
                 <li class="text-center">
-                    <img src="assets/img/find_user.png" class="user-image img-responsive" />
+                    <img src="assets/img/<?php echo $log['image']; ?>" style="border-radius:50%" class="user-image img-responsive" />
                 </li>
 
                 <li onmouseover="showDropdown('dropdown1')" onmouseout="hideDropdown('dropdown1')">
@@ -87,7 +92,7 @@
                     <div class="dropdown-content" id="dropdown1">
                         <a href="carousel.php">Carousel</a>
                         <a href="celebrity.php">Celebrity</a>
-                        <a href="collection.php">Collection</a>
+                        <a href="collections.php">Collection</a>
                     </div>
                 </li>
                 <li onmouseover="showDropdown('dropdown2')" onmouseout="hideDropdown('dropdown2')">

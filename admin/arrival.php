@@ -1,53 +1,148 @@
 <?php
-include("config/connection.php");
-include("config/session.php");
+include("config/connection.php"); // Include database connection
+include("config/session.php"); // Include session for admin login check
 
-if (isset($_POST['submit'])) {
-    // Get the uploaded images
-    $image1 = $_FILES['image1']['name'];         // Name of the first uploaded image
-    $tmpname1 = $_FILES['image1']['tmp_name'];   // Temporary name of the first uploaded file
+// Initialize success message
+$successMessage = '';
 
-    $image2 = $_FILES['image2']['name'];         // Name of the second uploaded image
-    $tmpname2 = $_FILES['image2']['tmp_name'];   // Temporary name of the second uploaded file
+// Fetch products from the database
+$query = "SELECT * FROM arrival";
+$res = mysqli_query($conn, $query);
 
-    // Get the name and price from the form
-    $name = $_POST['name'];
-    $price = $_POST['price'];
+if (isset($_GET['delete_id'])) {
+    $id = $_GET['delete_id'];
 
-    // Define the folder where you want to store the images
-    $folder1 = "../images/umer/" . $image1;
-    $folder2 = "../images/umer/" . $image2;
+    // Fetch record to get image file names before deletion
+    $fetchQuery = "SELECT image1, image2 , image3  FROM arrival WHERE sno = '$id'";
+    $fetchResult = mysqli_query($conn, $fetchQuery);
 
-    // If both images are uploaded successfully
-    if (move_uploaded_file($tmpname1, $folder1) && move_uploaded_file($tmpname2, $folder2)) {
-        if (isset($_GET['uid'])) {
-            // Update the record
-            $uid = $_GET['uid'];
-            $sql = "UPDATE `arrival` SET `image1`='$image1', `image2`='$image2', `name`='$name', `price`='$price' WHERE `sno`='$uid'";
-            $result = mysqli_query($conn, $sql);
-            if ($result) {
-                echo "Record updated successfully!<br>";
-            } else {
-                echo "Error updating the record.<br>";
-            }
+    if (mysqli_num_rows($fetchResult) > 0) {
+        $record = mysqli_fetch_assoc($fetchResult);
+
+        // Paths to images on the server
+        $image1Path = "images/" . $record['image1'];
+        $image2Path = "images/" . $record['image2'];
+        $image3Path = "images/" . $record['image3'];
+
+        // Delete images from the server
+        if (file_exists($image1Path)) {
+            unlink($image1Path);
+        }
+        if (file_exists($image2Path)) {
+            unlink($image2Path);
+        }
+        if (file_exists($image3Path)) {
+            unlink($image3Path);
+        }
+
+        // Delete the record from the database
+        $deleteQuery = "DELETE FROM arrival WHERE sno = '$id'";
+        if (mysqli_query($conn, $deleteQuery)) {
+            $_SESSION['successMessage'] = "Record deleted successfully!";
+            header("Location: arrival.php");
+            exit;
         } else {
-            // Insert new record
-            $sql = "INSERT INTO `arrival`(`image1`, `image2`, `name`, `price`) VALUES ('$image1', '$image2', '$name', '$price')";
-            $result = mysqli_query($conn, $sql);
-            if ($result) {
-                echo "Files '$image1' and '$image2' uploaded and database entry created successfully!<br>";
-            } else {
-                echo "Error inserting images into database.<br>";
-            }
+            echo "Error deleting record: " . mysqli_error($conn);
         }
     } else {
-        echo "Failed to upload images.<br>";
+        echo "Record not found.";
     }
 }
 
-// Fetch data from the database for displaying
-$query = "SELECT * FROM `arrival`";
-$res = mysqli_query($conn, $query);
+// Form submission for adding or updating products
+if (isset($_POST['submit'])) {
+    // Get name and price from the form
+    $name = $_POST['name'];
+    $price = $_POST['price'];
+    $desc = $_POST['desc'];
+    $shipping = $_POST['shipping'];
+
+    // Get uploaded image details
+    $image1 = $_FILES['image1']['name'];
+    $tmpname1 = $_FILES['image1']['tmp_name'];
+    $image2 = $_FILES['image2']['name'];
+    $tmpname2 = $_FILES['image2']['tmp_name'];
+    $image3 = $_FILES['image3']['name'];
+    $tmpname3 = $_FILES['image3']['tmp_name'];
+
+    // Define the folder where images will be stored
+    $folder1 = "images/" . $image1;
+    $folder2 = "images/" . $image2;
+    $folder3 = "images/" . $image3;
+
+    // Check if updating an existing record
+    if (!empty($_POST['uid'])) {
+        $uid = $_POST['uid'];
+
+        // Fetch the current record from the database to retain the existing images if no new ones are uploaded
+        $fetchQuery = "SELECT image1, image2, image3 FROM arrival WHERE sno = '$uid'";
+        $fetchResult = mysqli_query($conn, $fetchQuery);
+        if ($fetchResult && mysqli_num_rows($fetchResult) > 0) {
+            $record = mysqli_fetch_assoc($fetchResult);
+
+            // If no new image uploaded, retain the old image paths
+            if (empty($image1)) {
+                $image1 = $record['image1'];
+            }
+            if (empty($image2)) {
+                $image2 = $record['image2'];
+            }
+            if (empty($image3)) {
+                $image3 = $record['image3'];
+            }
+
+            // Move uploaded files to the server if new images are uploaded
+            if (!empty($image1) && move_uploaded_file($tmpname1, $folder1)) {
+                // Optionally delete old image if a new image is uploaded
+                if (file_exists("images/" . $record['image1'])) {
+                    unlink("images/" . $record['image1']);
+                }
+            }
+
+            if (!empty($image2) && move_uploaded_file($tmpname2, $folder2)) {
+                // Optionally delete old image if a new image is uploaded
+                if (file_exists("images/" . $record['image2'])) {
+                    unlink("images/" . $record['image2']);
+                }
+            }
+
+            if (!empty($image3) && move_uploaded_file($tmpname3, $folder3)) {
+                // Optionally delete old image if a new image is uploaded
+                if (file_exists("images/" . $record['image3'])) {
+                    unlink("images/" . $record['image3']);
+                }
+            }
+
+            // Update record in the database with the new or retained image paths
+            $sql = "UPDATE `arrival` SET `image1`='$image1', `image2`='$image2', `image3`='$image3', `name`='$name', `price`='$price' ,`desc`='$desc', `shipping`='$shipping' WHERE `sno`='$uid'";
+            $result = mysqli_query($conn, $sql);
+            if ($result) {
+                $_SESSION['successMessage'] = "Record updated successfully!";
+                header("Location: arrival.php");
+                exit;
+            } else {
+                echo "Error updating record.";
+            }
+        } else {
+            echo "Record not found!";
+        }
+    } else {
+        // Insert new record if no 'uid' is provided
+        if (!empty($image1) && move_uploaded_file($tmpname1, $folder1) && !empty($image2) && move_uploaded_file($tmpname2, $folder2) && !empty($image3) && move_uploaded_file($tmpname3, $folder3)) {
+            $sql = "INSERT INTO `arrival`(`image1`, `image2`, `image3`, `name`, `price`, `desc`, `shipping`) VALUES ('$image1', '$image2', '$image3', '$name', '$price', '$desc', '$shipping')";
+            $result = mysqli_query($conn, $sql);
+            if ($result) {
+                $_SESSION['successMessage'] = "Record added successfully!";
+                header("Location: arrival.php");
+                exit;
+            } else {
+                echo "Error adding record.";
+            }
+        } else {
+            echo "Failed to upload images.";
+        }
+    }
+}
 
 // If 'uid' is set, fetch the record to update it
 if (isset($_GET['uid'])) {
@@ -56,27 +151,31 @@ if (isset($_GET['uid'])) {
     $editResult = mysqli_query($conn, $editQuery);
     $editRow = mysqli_fetch_assoc($editResult);
 }
-
 ?>
+
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <!-- Include DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
     <!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FONTAWESOME STYLES-->
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
-    <!-- CUSTOM STYLES-->
-    <link href="assets/css/custom.css" rel="stylesheet" />
+    <!-- Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     <!-- GOOGLE FONTS-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-
+    <!-- CUSTOM STYLES-->
+    <link href="assets/css/custom.css" rel="stylesheet" />
     <style>
         th {
             text-align: center;
@@ -126,143 +225,163 @@ if (isset($_GET['uid'])) {
             color: #fff;
         }
 
-        /* Button style for Update and Delete */
-        .button {
-            width: 100%;
-            /* max-height: 100px; */
-            display: inline-block;
-            text-decoration: none;
+        textarea {
+            height: 30px;
         }
 
-        .button button {
+        .operation {
+            text-align: center;
+        }
+
+        .upt {
             background-color: green;
-            color: white;
-            font-size: 15px;
+            color: #fff;
+            height: 40px;
+            width: 70px;
+            margin: 5px;
             border: none;
-            cursor: pointer;
-            padding: 10px;
-            width: 100%;
+
         }
 
-        .delete-button button {
+        .del {
             background-color: red;
-            color: white;
-            font-size: 15px;
+            color: #fff;
+            height: 40px;
+            width: 70px;
             border: none;
-            cursor: pointer;
-            padding: 10px;
-            width: 100%;
         }
     </style>
 </head>
 
 <body>
     <div id="wrapper">
-        <?php
-        include("nav.php");
-        ?>
+        <?php include("nav.php"); ?>
 
-        <!-- /. NAV SIDE  -->
         <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>New Arrivals </h2>
+                        <h2> New Arrivals </h2>
                     </div>
                 </div>
-                <!-- /. ROW  -->
+
                 <hr />
 
                 <div class="row">
-                    <!-- Form  -->
-                    <div class="col-md-4">
+                    <!-- Product form -->
+                    <div class="col-md-3">
                         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" enctype="multipart/form-data">
-
                             <label for="image1">Upload Image1:</label>
-                            <input type="file" id="image1" name="image1" <?php echo isset($editRow) ? '' : 'required'; ?>><br><br>
+                            <input type="file" id="image1" name="image1">
+                            <?php if (isset($editRow)) { ?> <label><?php echo isset($editRow) ? $editRow['image1'] : ''; ?></label>
+                            <?php } ?>
+                            <br><br>
                             <label for="image2">Upload Image2:</label>
-                            <input type="file" id="image2" name="image2" <?php echo isset($editRow) ? '' : 'required'; ?>><br><br>
-                            <label for="name"> Name :</label>
-                            <input type="text" id="name" name="name" value="<?php echo isset($editRow) ? $editRow['name'] : ''; ?>" required><br><br>
-                            <label for="price"> Price :</label>
-                            <input type="text" id="price" name="price" value="<?php echo isset($editRow) ? $editRow['price'] : ''; ?>" required><br><br>
+                            <input type="file" id="image2" name="image2">
+                            <?php if (isset($editRow)) { ?> <label><?php echo isset($editRow) ? $editRow['image2'] : ''; ?></label>
+                            <?php } ?>
+                            <br><br>
+                            <label for="image3">Upload Image3:</label>
+                            <input type="file" id="image3" name="image3">
+                            <?php if (isset($editRow)) { ?> <label><?php echo isset($editRow) ? $editRow['image3'] : ''; ?></label>
+                            <?php } ?>
+                            <br><br>
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" name="name" value="<?php echo isset($editRow) ? $editRow['name'] : ''; ?>" required>
+                            <br><br>
+                            <label for="price">Price:</label>
+                            <input type="text" id="price" name="price" value="<?php echo isset($editRow) ? $editRow['price'] : ''; ?>" required>
+                            <br><br>
+                            <label for="desc">description:</label>
+                            <textarea type="text" id="desc" name="desc" value="<?php echo isset($editRow) ? $editRow['desc'] : ''; ?>" required> </textarea>
+                            <br><br>
+                            <label for="shipping">Shipping:</label>
+                            <textarea type="text" id="shipping" name="shipping" value="<?php echo isset($editRow) ? $editRow['shipping'] : ''; ?>" required> </textarea>
+                            <br><br>
 
-                            <input type="submit" name="submit" value="<?php echo isset($editRow) ? 'Update' : 'Add New'; ?>">
+                            <?php if (isset($editRow)): ?>
+                                <input type="hidden" name="uid" value="<?php echo $editRow['sno']; ?>" />
+                            <?php endif; ?>
+
+                            <input type="submit" name="submit" value="<?php echo isset($editRow) ? 'Update' : 'Add New '; ?>">
                         </form>
-
                     </div>
-                    <!-- Advanced Tables -->
-                    <div class="col-md-8" style="border-left:1px solid #ddd" ;>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                Reservation Tables
-                            </div>
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                        <thead>
-                                            <tr>
-                                                <th>Sno</th>
-                                                <th>Image1</th>
-                                                <th>Image2</th>
-                                                <th>Price</th>
-                                                <th>Name</th>
-                                                <th colspan="2">operations</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            // Display the fetched data
-                                            if (mysqli_num_rows($res) > 0) {
-                                                $sno = 1;
-                                                while ($row = mysqli_fetch_assoc($res)) {
-                                                    echo "<tr>";
-                                                    echo "<td>" . $sno++ . "</td>";
-                                                    echo "<td>" . $row['image1'] . "</td>";
-                                                    echo "<td>" . $row['image2'] . "</td>";
-                                                    echo "<td>" . $row['name'] . "</td>";
-                                                    echo "<td>" . $row['price'] . "</td>";
-                                                    echo "<td class='button'><a href='?uid=" . $row['sno'] . "'>
-                                                        <button type='button'>Update</button></a></td>";
 
-                                                    echo "<td class='delete-button'><a href='delete.php?id=" . $row['sno'] . "'>
-                                                        <button type='button'>Delete</button></a></td>";
-                                                    echo "</tr>";
-                                                }
-                                            } else {
-                                                echo "<tr><td colspan='7'>No records found.</td></tr>";
-                                            }
-                                            ?>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
+                    <div class="col-md-9" style="border-left:1px solid #ddd;">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>Sno</th>
+                                        <th>Image1</th>
+                                        <th>Image2</th>
+                                        <th>Image3</th>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>description</th>
+                                        <th>Shipping</th>
+                                        <th>Operations</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $i = 1;
+                                    while ($row = mysqli_fetch_assoc($res)) { ?>
+                                        <tr class="operation">
+                                            <td><?php echo $i; ?></td>
+                                            <td><img src="images/<?php echo $row['image1']; ?>" alt="Image1" style="width: 80px; height: 80px;"></td>
+                                            <td><img src="images/<?php echo $row['image2']; ?>" alt="Image2" style="width: 80px; height: 80px;"></td>
+                                            <td><img src="images/<?php echo $row['image3']; ?>" alt="Image3" style="width: 80px; height: 80px;"></td>
+                                            <td><?php echo $row['name']; ?></td>
+                                            <td><?php echo $row['price']; ?></td>
+                                            <td><?php echo $row['desc']; ?></td>
+                                            <td><?php echo $row['shipping']; ?></td>
+                                            <td>
+                                                <a href="?uid=<?php echo $row['sno']; ?>"><button type="button" class="upt">Update</button></a>
+                                                <a href="?delete_id=<?php echo $row['sno']; ?>"><button type="button" class="del" onclick="return confirmDelete()">Delete</button></a>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                        $i++;
+                                    } ?>
+                                </tbody>
+                            </table>
                         </div>
+
+                        <!-- DataTables Initialization -->
+                        <script>
+                            $(document).ready(function() {
+                                $('#dataTables-example').DataTable();
+                            });
+                        </script>
+
                     </div>
                 </div>
 
-
-                <!-- /. ROW  -->
-
             </div>
-            <!-- /. PAGE INNER  -->
         </div>
-        <!-- /. PAGE WRAPPER  -->
     </div>
-    <!-- /. WRAPPER  -->
-    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
-    <!-- JQUERY SCRIPTS -->
-    <script src="assets/js/jquery-1.10.2.js"></script>
-    <!-- BOOTSTRAP SCRIPTS -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
-    <script src="assets/js/bootstrap.min.js"></script>
-    <!-- METISMENU SCRIPTS -->
-    <script src="assets/js/jquery.metisMenu.js"></script>
-    <!-- CUSTOM SCRIPTS -->
-    <script src="assets/js/custom.js"></script>
 
+    <script src="assets/js/jquery-1.10.2.js"></script>
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- Include DataTables JS -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="assets/js/jquery.metisMenu.js"></script>
+    <script src="assets/js/custom.js"></script>
+    <script>
+        // Show success message if it's set in session
+        <?php if (isset($_SESSION['successMessage'])): ?>
+            toastr.success('<?php echo $_SESSION['successMessage']; ?>');
+            <?php unset($_SESSION['successMessage']); ?> // Clear the session message
+        <?php endif; ?>
+
+        // Confirm before delete
+        function confirmDelete() {
+            return confirm('Are you sure you want to delete this record?');
+        }
+    </script>
 
 </body>
 

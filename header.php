@@ -125,7 +125,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <ul class="d-flex flex-column ">
-                                            <li> <a href="partylehenga.php"> Lehenga Choli </a></li>
+                                            <li> <a href="partylehenga.php"> Lehengas </a></li>
                                             <li> <a href="partysaree.php"> Designer Saree </a> </li>
 
                                         </ul>
