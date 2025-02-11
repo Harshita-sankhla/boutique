@@ -100,7 +100,6 @@ $log = mysqli_fetch_assoc($reslog);
                         <i class="fas fa-gem fa-3x"></i> Accessories <i class="fas fa-chevron-down"></i>
                     </button>
                     <div class="dropdown-content" id="dropdown2">
-                        <a href="bottom.php">Bottoms</a>
                         <a href="dupatta.php">Dupattas</a>
                         <a href="earing.php">Earings</a>
                         <a href="necklace.php">Necklace</a>
@@ -141,6 +140,9 @@ $log = mysqli_fetch_assoc($reslog);
                 </li>
                 <li c style="border:1px solid #aaa ; padding:7px;">
                     <a href="contact.php"><i class="fa fa-desktop fa-3x"></i> Contact</a>
+                </li>
+                <li c style="border:1px solid #aaa ; padding:7px;">
+                    <a href="user_login.php"><i class="fas fa-user fa-3x"></i> User Login</a>
                 </li>
             </ul>
 

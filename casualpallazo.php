@@ -2,7 +2,7 @@
 include("admin/config/connection.php");
 
 // Fetch products from the database
-$query = "SELECT image1,image2,name,price FROM casualpallazo";
+$query = "SELECT sno,image1,image2,name,price FROM casualpallazo";
 $res = mysqli_query($conn, $query);
 ?>
 <!doctype html>
@@ -44,14 +44,20 @@ $res = mysqli_query($conn, $query);
             // Step 3: Loop through the fetched data and display each product
             if ($res->num_rows > 0) {
                 while ($row = $res->fetch_assoc()) {
+                    $sno = $row['sno']; // Product ID
                     $image1 = $row['image1']; // Main image
                     $image2 = $row['image2']; // Hover image
                     $name = $row['name'];
                     $price = $row['price'];
 
-                    // Display each product in the HTML structure
+                    // Create a link to page.php with URL parameters
+                    $product_link = "page.php?category=casualpallazo&id=" . urlencode($row['sno']) . "&image1=" . urlencode($row['image1']) . "&image2=" . urlencode($row['image2']) . "&name=" . urlencode($row['name']) . "&price=" . urlencode($row['price']);
+
+                    // Display each product with the link
                     echo '<div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in py-4">';
+                    echo '<a href="' . $product_link . '">'; // Link to page.php with product details
                     echo '<img src="admin/images/' . $image1 . '" class="img-fluid hover-image fixed-height" data-hover="admin/images/' . $image2 . '" alt="' . $name . '">';
+                    echo '</a>';
                     echo '<h6 class="mt-3 product-name">' . $name . '</h6>';
                     echo '<span class="mt-0 px-2 product-price">Rs. ' . $price . '</span>';
                     echo '</div>';

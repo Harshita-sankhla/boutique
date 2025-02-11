@@ -1,3 +1,21 @@
+<?php
+// Include the database connection
+include("admin/config/connection.php");
+
+// Fetch products from the database (for example, from the "bags" category)
+$query = "SELECT image, name, price FROM bag";
+$result = mysqli_query($conn, $query);
+
+// Check if there are products
+if (mysqli_num_rows($result) > 0) {
+    // Fetch all products
+    $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    // No products found
+    $products = [];
+}
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -14,169 +32,42 @@
 </head>
 
 <body>
-    <!-- section header  Start  -->
+    <!-- section header Start -->
     <div class="container-fluid outer">
-        <?php
-        include("header.php")
-        ?>
+        <?php include("header.php"); ?>
     </div>
-    <!-- section  header End  -->
+    <!-- section header End -->
 
-    <!-- section 1 Start  -->
+    <!-- section 1 Start -->
     <div class="container-fluid backimage" style=" background-image: url(images/accbag.jpg);">
         <div class="overlay"></div> <!-- Increased overlay opacity -->
         <div class="text"> <!-- Changed text color to yellow -->
             <h1> <b>BAGS</b> </h1> <!-- Increased font size -->
         </div>
     </div>
-    <!-- section 1 End  -->
+    <!-- section 1 End -->
 
-    <!-- section 2 Start  -->
+    <!-- section 2 Start -->
     <div class="container-fluid">
         <div class="row section3 py-5 px-2">
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accbag11.jpg" class="img-fluid fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-3</h6>
-                <span class="mt-0 product-price">Rs. 18,000.00</span>
-            </div>
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accbag12.jpg" class="img-fluid  fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-4</h6>
-                <del class="mt-0 product-price">Rs. 28,000.00</del>
-                <span class="mt-0 px-2 product-price">Rs. 14,000.00</span>
-            </div>
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accbag13.jpg" class="img-fluid  fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-10</h6>
-                <span class="mt-0 product-price">Rs. 18,000.00</span>
-            </div>
-            <div class="col-md-3 col-6 text-center image-fade-in ">
-                <img src="images/accbag14.jpg" class="img-fluid px-0  fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-5</h6>
-                <span class="mt-0 product-price">Rs. 34,000.00</span>
-            </div>
+            <?php if (!empty($products)) : ?>
+                <?php foreach ($products as $product) : ?>
+                    <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in py-4">
+                        <img src="admin/images/<?php echo $product['image']; ?>" class="img-fluid fixed-height" alt="">
+                        <h6 class="mt-3 product-name"><?php echo $product['name']; ?></h6>
+                        <span class="mt-0 px-2 product-price">Rs. <?php echo $product['price']; ?></span>
+                    </div>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <p>No products found</p>
+            <?php endif; ?>
         </div>
     </div>
-    <!-- section 2 End   -->
+    <!-- section 2 End -->
 
-    <!-- section 3 Start  -->
-    <div class="container-fluid">
-        <div class="row section3 py-5 px-2">
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accbag21.jpg" class="img-fluid fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-3</h6>
-                <span class="mt-0 product-price">Rs. 18,000.00</span>
-            </div>
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accbag22.jpg" class="img-fluid  fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-4</h6>
-                <del class="mt-0 product-price">Rs. 28,000.00</del>
-                <span class="mt-0 px-2 product-price">Rs. 14,000.00</span>
-            </div>
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accbag23.jpg" class="img-fluid  fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-10</h6>
-                <span class="mt-0 product-price">Rs. 18,000.00</span>
-            </div>
-            <div class="col-md-3 col-6 text-center image-fade-in ">
-                <img src="images/accbag24.jpg" class="img-fluid px-0  fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-5</h6>
-                <span class="mt-0 product-price">Rs. 34,000.00</span>
-            </div>
-        </div>
-    </div>
-    <!-- section 3 End   -->
-
-    <!-- section 4 Start  -->
-    <div class="container-fluid">
-        <div class="row section3 py-5 px-2">
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accbag31.jpg" class="img-fluid fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-3</h6>
-                <span class="mt-0 product-price">Rs. 18,000.00</span>
-            </div>
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accbag32.jpg" class="img-fluid  fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-4</h6>
-                <del class="mt-0 product-price">Rs. 28,000.00</del>
-                <span class="mt-0 px-2 product-price">Rs. 14,000.00</span>
-            </div>
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accbag33.jpg" class="img-fluid  fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-10</h6>
-                <span class="mt-0 product-price">Rs. 18,000.00</span>
-            </div>
-            <div class="col-md-3 col-6 text-center image-fade-in ">
-                <img src="images/accbag34.jpg" class="img-fluid px-0  fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-5</h6>
-                <span class="mt-0 product-price">Rs. 34,000.00</span>
-            </div>
-        </div>
-    </div>
-    <!-- section 4 End   -->
-
-    <!-- section 5 Start  -->
-    <div class="container-fluid">
-        <div class="row section3 py-5 px-2">
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accbag41.jpg" class="img-fluid fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-3</h6>
-                <span class="mt-0 product-price">Rs. 18,000.00</span>
-            </div>
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accbag42.jpg" class="img-fluid  fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-4</h6>
-                <del class="mt-0 product-price">Rs. 28,000.00</del>
-                <span class="mt-0 px-2 product-price">Rs. 14,000.00</span>
-            </div>
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accbag43.jpg" class="img-fluid  fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-10</h6>
-                <span class="mt-0 product-price">Rs. 18,000.00</span>
-            </div>
-            <div class="col-md-3 col-6 text-center image-fade-in ">
-                <img src="images/accbag44.jpg" class="img-fluid px-0  fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-5</h6>
-                <span class="mt-0 product-price">Rs. 34,000.00</span>
-            </div>
-        </div>
-    </div>
-    <!-- section 5 End   -->
-
-    <!-- section 6 Start  -->
-    <div class="container-fluid">
-        <div class="row section3 py-5 px-2">
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accbag51.jpg" class="img-fluid fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-3</h6>
-                <span class="mt-0 product-price">Rs. 18,000.00</span>
-            </div>
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accbag52.jpg" class="img-fluid  fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-4</h6>
-                <del class="mt-0 product-price">Rs. 28,000.00</del>
-                <span class="mt-0 px-2 product-price">Rs. 14,000.00</span>
-            </div>
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
-                <img src="images/accbag53.jpg" class="img-fluid  fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-10</h6>
-                <span class="mt-0 product-price">Rs. 18,000.00</span>
-            </div>
-            <div class="col-md-3 col-6 text-center image-fade-in ">
-                <img src="images/accbag54.jpg" class="img-fluid px-0  fixed-height" alt="">
-                <h6 class="mt-3 product-name">NAL-5</h6>
-                <span class="mt-0 product-price">Rs. 34,000.00</span>
-            </div>
-        </div>
-    </div>
-    <!-- section 6 End   -->
-
-    <!-- footer Start   -->
-
-    <!-- footer End  -->
-    <?php
-    include("footer.php")
-    ?>
+    <!-- footer Start -->
+    <?php include("footer.php"); ?>
+    <!-- footer End -->
 
     <!-- Link to the external script.js -->
     <script src="js/script.js"></script>

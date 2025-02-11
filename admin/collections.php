@@ -40,7 +40,8 @@ if (isset($_GET['delete_id'])) {
 
 // Form submission for adding or updating products
 if (isset($_POST['submit'])) {
-    $name = $_POST['link'];
+    $link = $_POST['link'];
+    $name = $_POST['name'];
 
     $image = $_FILES['image']['name'];  // Get the uploaded image name
     $tmpname = $_FILES['image']['tmp_name'];  // Get the temporary file name
@@ -72,7 +73,7 @@ if (isset($_POST['submit'])) {
             }
 
             // Update record in the database with the new or retained image paths
-            $sql = "UPDATE `collections` SET `image`='$image', `link`='$link' WHERE `sno`='$uid'";
+            $sql = "UPDATE `collections` SET `image`='$image', `name`='$name', `link`='$link' WHERE `sno`='$uid'";
             $result = mysqli_query($conn, $sql);
             if ($result) {
                 $_SESSION['successMessage'] = "Record updated successfully!";
@@ -87,7 +88,7 @@ if (isset($_POST['submit'])) {
     } else {
         // Insert new record if no 'uid' is provided
         if (!empty($image) && move_uploaded_file($tmpname, $folder)) {
-            $sql = "INSERT INTO `collections`(`image`,`link`) VALUES ('$image','$link')";
+            $sql = "INSERT INTO `collections`(`image`,`name`,`link`) VALUES ('$image','$name',''$link')";
             $result = mysqli_query($conn, $sql);
             if ($result) {
                 $_SESSION['successMessage'] = "Record added successfully!";
@@ -225,7 +226,10 @@ if (isset($_GET['uid'])) {
                             <?php if (isset($editRow)) { ?> <label><?php echo isset($editRow) ? $editRow['image'] : ''; ?></label>
                             <?php } ?>
                             <br><br>
-                            <label for="name">Link:</label>
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" name="name" value="<?php echo isset($editRow) ? $editRow['name'] : ''; ?>" required>
+                            <br><br>
+                            <label for="link">Link:</label>
                             <input type="text" id="link" name="link" value="<?php echo isset($editRow) ? $editRow['link'] : ''; ?>" required>
                             <br><br>
                             <?php if (isset($editRow)): ?>
@@ -243,6 +247,7 @@ if (isset($_GET['uid'])) {
                                     <tr>
                                         <th>Sno</th>
                                         <th>Image</th>
+                                        <th>Name</th>
                                         <th>Link</th>
                                         <th>Operations</th>
                                     </tr>
@@ -254,6 +259,7 @@ if (isset($_GET['uid'])) {
                                         <tr class="operation">
                                             <td><?php echo $i; ?></td>
                                             <td><img src="images/<?php echo $row['image']; ?>" alt="Image" style="width: 100px; height: 80px;"></td>
+                                            <td><?php echo $row['name']; ?></td>
                                             <td><?php echo $row['link']; ?></td>
                                             <td>
                                                 <a href="?uid=<?php echo $row['sno']; ?>"><button type="button" class="upt">Update</button></a>

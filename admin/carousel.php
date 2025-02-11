@@ -12,16 +12,20 @@ if (isset($_GET['delete_id'])) {
     $id = $_GET['delete_id'];
 
     // Fetch record to get image file names before deletion
-    $fetchQuery = "SELECT image FROM carousel WHERE sno = '$id'";
+    $fetchQuery = "SELECT image1,image2 FROM carousel WHERE sno = '$id'";
     $fetchResult = mysqli_query($conn, $fetchQuery);
 
     if (mysqli_num_rows($fetchResult) > 0) {
         $record = mysqli_fetch_assoc($fetchResult);
-        $imagePath = "images/" . $record['image'];
+        $image1Path = "images/" . $record['image1'];
+        $image2Path = "images/" . $record['image2'];
 
         // Delete images from the server
-        if (file_exists($imagePath)) {
-            unlink($imagePath);
+        if (file_exists($imagePath1)) {
+            unlink($imagePath1);
+        }
+        if (file_exists($imagePath2)) {
+            unlink($imagePath2);
         }
 
         // Delete the record from the database
@@ -40,37 +44,49 @@ if (isset($_GET['delete_id'])) {
 
 // Form submission for adding or updating products
 if (isset($_POST['submit'])) {
-    $image = $_FILES['image']['name'];  // Get the uploaded image name
-    $tmpname = $_FILES['image']['tmp_name'];  // Get the temporary file name
+    $image1 = $_FILES['image1']['name'];  // Get the uploaded image name
+    $tmpname1 = $_FILES['image1']['tmp_name'];  // Get the temporary file name
+    $image2 = $_FILES['image2']['name'];  // Get the uploaded image name
+    $tmpname2 = $_FILES['image2']['tmp_name'];  // Get the temporary file name
 
     // Define the folder where images will be stored
-    $folder = "images/" . $image;
+    $folder1 = "images/" . $image1;
+    $folder2 = "images/" . $image2;
 
     // Check if updating an existing record
     if (!empty($_POST['uid'])) {
         $uid = $_POST['uid'];
 
         // Fetch the current record to retain existing image if no new one is uploaded
-        $fetchQuery = "SELECT image FROM carousel WHERE sno = '$uid'";
+        $fetchQuery = "SELECT image1,image2 FROM carousel WHERE sno = '$uid'";
         $fetchResult = mysqli_query($conn, $fetchQuery);
         if ($fetchResult && mysqli_num_rows($fetchResult) > 0) {
             $record = mysqli_fetch_assoc($fetchResult);
 
             // If no new image uploaded, retain the old image path
-            if (empty($image)) {
-                $image = $record['image'];
+            if (empty($image1)) {
+                $image1 = $record['image1'];
+            }
+            if (empty($image2)) {
+                $image2 = $record['image2'];
             }
 
             // Move uploaded file to server if new image is uploaded
-            if (!empty($image) && move_uploaded_file($tmpname, $folder)) {
+            if (!empty($image) && move_uploaded_file($tmpname1, $folder1)) {
                 // Optionally delete old image if a new image is uploaded
-                if (file_exists("images/" . $record['image']) && !empty($image)) {
-                    unlink("images/" . $record['image']);
+                if (file_exists("images/" . $record['image1']) && !empty($image1)) {
+                    unlink("images/" . $record['image1']);
+                }
+            }
+            if (!empty($image) && move_uploaded_file($tmpname2, $folder2)) {
+                // Optionally delete old image if a new image is uploaded
+                if (file_exists("images/" . $record['image2']) && !empty($image2)) {
+                    unlink("images/" . $record['image2']);
                 }
             }
 
             // Update record in the database with the new or retained image paths
-            $sql = "UPDATE `carousel` SET `image`='$image' WHERE `sno`='$uid'";
+            $sql = "UPDATE `carousel` SET `image1`='$image1', `image2`='$image2`='$image' WHERE `sno`='$uid'";
             $result = mysqli_query($conn, $sql);
             if ($result) {
                 $_SESSION['successMessage'] = "Record updated successfully!";
@@ -84,8 +100,8 @@ if (isset($_POST['submit'])) {
         }
     } else {
         // Insert new record if no 'uid' is provided
-        if (!empty($image) && move_uploaded_file($tmpname, $folder)) {
-            $sql = "INSERT INTO `carousel`(`image`) VALUES ('$image')";
+        if (!empty($image1) && move_uploaded_file($tmpname1, $folder1) && !empty($image2) && move_uploaded_file($tmpname2, $folder2)) {
+            $sql = "INSERT INTO `carousel`(`image1`, `image2`) VALUES ('$image1', '$image2')";
             $result = mysqli_query($conn, $sql);
             if ($result) {
                 $_SESSION['successMessage'] = "Record added successfully!";
@@ -218,9 +234,14 @@ if (isset($_GET['uid'])) {
                     <!-- Product form -->
                     <div class="col-md-6">
                         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" enctype="multipart/form-data">
-                            <label for="image">Upload Image:</label>
-                            <input type="file" id="image" name="image">
-                            <?php if (isset($editRow)) { ?> <label><?php echo isset($editRow) ? $editRow['image'] : ''; ?></label>
+                            <label for="image">Upload Image1:</label>
+                            <input type="file" id="image1" name="image1">
+                            <?php if (isset($editRow)) { ?> <label><?php echo isset($editRow) ? $editRow['image1'] : ''; ?></label>
+                            <?php } ?>
+                            <br><br>
+                            <label for="image2">Upload Image2:</label>
+                            <input type="file" id="image2" name="image2">
+                            <?php if (isset($editRow)) { ?> <label><?php echo isset($editRow) ? $editRow['image2'] : ''; ?></label>
                             <?php } ?>
                             <br><br>
                             <?php if (isset($editRow)): ?>
@@ -237,7 +258,8 @@ if (isset($_GET['uid'])) {
                                 <thead>
                                     <tr>
                                         <th>Sno</th>
-                                        <th>Image</th>
+                                        <th>Image1</th>
+                                        <th>Image2</th>
                                         <th>Operations</th>
                                     </tr>
                                 </thead>
@@ -247,7 +269,8 @@ if (isset($_GET['uid'])) {
                                     while ($row = mysqli_fetch_assoc($res)) { ?>
                                         <tr class="operation">
                                             <td><?php echo $i; ?></td>
-                                            <td><img src="images/<?php echo $row['image']; ?>" alt="Image" style="width: 100px; height: 80px;"></td>
+                                            <td><img src="images/<?php echo $row['image1']; ?>" alt="Image1" style="width: 100px; height: 80px;"></td>
+                                            <td><img src="images/<?php echo $row['image2']; ?>" alt="Image2" style="width: 100px; height: 80px;"></td>
                                             <td>
                                                 <a href="?uid=<?php echo $row['sno']; ?>"><button type="button" class="upt">Update</button></a>
                                                 <a href="?delete_id=<?php echo $row['sno']; ?>"><button type="button" class="del" onclick="return confirmDelete()">Delete</button></a>

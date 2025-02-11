@@ -1,3 +1,28 @@
+<?php
+include("admin/config/connection.php");
+
+// Query to get slider images
+$sql = "SELECT image1,image2 FROM  `carousel`";
+$result = $conn->query($sql);
+
+$slider_images = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $slider_images[] = $row;
+    }
+}
+
+$sql1 = "SELECT image, name FROM `celebrity` LIMIT 5"; // Adjust as needed
+$result1 = $conn->query($sql1);
+
+$celebrities = [];
+if ($result1->num_rows > 0) {
+    while ($row1 = $result1->fetch_assoc()) {
+        $celebrities[] = $row1;
+    }
+}
+
+?>
 <!doctype html>
 <html lang="en">
 
@@ -10,16 +35,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Font Awesome for Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-     <!-- Style CSS -->
-     <link rel="stylesheet" href="css/style.css">
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <!-- section First Start  -->
     <div class="container-fluid outer">
-    <?php
+        <?php
         include("header.php")
-    ?>
+        ?>
     </div>
     <!-- section  First End  -->
 
@@ -29,33 +54,19 @@
         <!-- Slider -->
         <div class="slider-container">
             <div class="slider-inner" id="slider">
-                <!-- Slider Item 1 -->
-                <div class="slider-item">
-                    <a href="arrival.php">
-                        <img src="images/slider1.png" class="slider-img d-none d-md-block" width="100%" alt="Slide 1">
-                        <img src="images/slider11.png" class="slider-img d-block d-md-none" width="100%"
-                            alt="Slide 1 mobile">
-                    </a>
-                </div>
-                <!-- Slider Item 2 -->
-                <div class="slider-item">
-                    <a href="arrival.php">
-                        <img src="images/slider2.png" class="slider-img d-none d-md-block" width="100%" alt="Slide 2">
-                        <img src="images/slider22.png" class="slider-img d-block d-md-none" width="100%"
-                        alt="Slide 2 mobile">
-                    </a>
-                    
-                </div>
-                <!-- Slider Item 3 -->
-                <div class="slider-item">
-                    <a href="arrival.php">
-                        <img src="images/slider3.png" class="slider-img d-none d-md-block" width="100%" alt="Slide 3">
-                        <img src="images/slider33.png" class="slider-img d-block d-md-none" width="100%"
-                        alt="Slide 3 mobile">
-                    </a>
-                    
-                </div>
-
+                <?php
+                if (count($slider_images) > 0):
+                    foreach ($slider_images as $index => $image): ?>
+                        <div class="slider-item">
+                            <a href="arrival.php">
+                                <img src="images/<?= $image['image1']; ?>" class="slider-img d-none d-md-block" width="100%" alt="Slide <?= $index + 1 ?>">
+                                <img src="images/<?= $image['image2']; ?>" class="slider-img d-block d-md-none" width="100%" alt="Slide <?= $index + 1 ?> mobile">
+                            </a>
+                        </div>
+                    <?php endforeach;
+                else: ?>
+                    <p>No images found for the slider.</p>
+                <?php endif; ?>
             </div>
 
             <!-- Slider Controls -->
@@ -83,7 +94,7 @@
     <!-- Section 3 Start  -->
     <div class="container-fluid">
         <div class="row section3 py-5 px-2">
-            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in">
+            <div class="col-md-3 col-6 mb-4 mb-md-0 text-center ">
                 <img src="images/section311.png" class="img-fluid hover-image" data-hover="images/section312.png"
                     alt="">
                 <h6 class="mt-3 product-name">NAL-3</h6>
@@ -110,7 +121,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Section 3 End  -->
 
     <!-- Section 4 Start  -->
@@ -306,34 +317,17 @@
 
         </div>
 
-        <!-- Images in a row for large screens -->
         <div class="row d-none d-md-flex justify-content-between mx-3 my-4 text-center section3">
-            <div class="col image-fade-in">
-                <img src="images/section41.png" class="img-fluid img-fluid1" alt="">
-                <p style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 16px;" class="my-2">Ishna
-                    Batra</p>
-            </div>
-            <div class="col image-fade-in">
-                <img src="images/section42.png" class="img-fluid img-fluid1" alt="">
-                <p style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 16px;" class="my-2">Elnaaz
-                    Norouzi</p>
-            </div>
-            <div class="col image-fade-in">
-                <img src="images/section43.png" class="img-fluid img-fluid1" alt="">
-                <p style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 16px;" class="my-2">Nina Shah
-                </p>
-            </div>
-            <div class="col image-fade-in">
-                <img src="images/section44.png" class="img-fluid img-fluid1" alt="">
-                <p style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 16px;" class="my-2">Alisha
-                    Pekha</p>
-            </div>
-            <div class="col image-fade-in">
-                <img src="images/section45.png" class="img-fluid img-fluid1" alt="">
-                <p style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 16px;" class="my-2">Hanna S
-                    Khan</p>
-            </div>
+            <?php foreach ($celebrities as $celebrity): ?>
+                <div class="col image-fade-in">
+                    <img src="images/<?php echo $celebrity['image']; ?>" class="img-fluid img-fluid1" alt="<?php echo $celebrity['name']; ?>">
+                    <p style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 16px;" class="my-2">
+                        <?php echo $celebrity['name']; ?>
+                    </p>
+                </div>
+            <?php endforeach; ?>
         </div>
+
     </div>
     <!-- section 10 End  -->
 
@@ -356,7 +350,7 @@
                 <img src="images/section10.png" class="slider-img d-none d-md-block" width="100%" alt="Slide 1">
                 <img src="images/section100.png" class="slider-img d-block d-md-none" width="100%" alt="Slide 1 mobile">
             </a>
-            
+
         </div>
         <div class="row my-4 mx-3 text-center section3">
             <div class="col-md-3 col-6 my-2 image-zoom image-fade-in">
@@ -391,42 +385,43 @@
             <p style="font-size: 3rem; font-family: 'Times New Roman'">Collections</p>
         </div>
         <div class="row section3 py-3 px-4">
-            <div class="col image-fade-in text-center " >
+            <div class="col image-fade-in text-center ">
                 <img src="images/section121.png" class="img-fluid" style="height: 450px; width: 350px;" alt="">
-                <a href="partylehenga.php" class="page "> Lehengas <i class="bi bi-arrow-right"></i>  </a> 
+                <a href="partylehenga.php" class="page "> Lehengas <i class="bi bi-arrow-right"></i> </a>
             </div>
-            <div class="col image-fade-in text-center d-none d-md-block" >
+            <div class="col image-fade-in text-center d-none d-md-block">
                 <img src="images/section122.png" class="img-fluid" style="height: 450px; width: 350px;" alt="">
-                <a href="partygown.php" class="page "> Gowns <i class="bi bi-arrow-right"></i>  </a>
+                <a href="partygown.php" class="page "> Gowns <i class="bi bi-arrow-right"></i> </a>
             </div>
-            <div class="col  image-fade-in text-center d-none d-md-block" >
+            <div class="col  image-fade-in text-center d-none d-md-block">
                 <img src="images/section123.png" class="img-fluid" style="height: 450px; width: 350px;" alt="">
                 <a href="casualco_ord.php" class="page "> Co-ord Set <i class="bi bi-arrow-right"></i> </a>
             </div>
-            <div class="col  image-fade-in text-center d-none d-md-block" >
+            <div class="col  image-fade-in text-center d-none d-md-block">
                 <img src="images/section124.png" class="img-fluid" style="height: 450px; width: 350px;" alt="">
                 <a href="casualpallazo.php" class="page">Pallazos <i class="bi bi-arrow-right"></i></a>
             </div>
         </div>
         <div class="row py-4 px-4 text-center" style=" background-color: #f7f7f7;">
-            <div col-12 >
+            <div col-12>
                 <button class="my-4 px-4 py-2 btn btn-outline-light"
                     style="border: none; background-color: #ccc; color: white; border-radius: 0;"
                     onclick="window.location.href='collection.php'">View all</button>
             </div>
-            
+
         </div>
     </div>
-     <!-- section 12 End    -->
+    <!-- section 12 End    -->
     <!-- footer Start   -->
     <?php
-        include("footer.php")
+    include("footer.php")
     ?>
     <!-- footer End  -->
 
 
     <!-- Link to the external script.js -->
     <script src="js/script.js"></script>
+    <script src="page.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

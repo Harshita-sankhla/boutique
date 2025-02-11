@@ -1,0 +1,18 @@
+Array
+(
+    [prod_id] => <br />
+<b>Warning</b>:  Undefined variable $id in <b>C:\Xampp\htdocs\boutique\page.php</b> on line <b>150</b><br />
+
+    [prod_name] => Embroidered Blouse with meroon Layered Skirt
+    [prod_price] => 19000.00
+    [quantity] => 1
+)
+Array
+(
+    [prod_id] => <br />
+<b>Warning</b>:  Undefined variable $id in <b>C:\Xampp\htdocs\boutique\page.php</b> on line <b>150</b><br />
+
+    [prod_name] => Embroidered Blouse with meroon Layered Skirt
+    [prod_price] => 19000.00
+    [quantity] => 1
+)

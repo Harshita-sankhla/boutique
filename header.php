@@ -5,9 +5,95 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Font Awesome for Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Cart Dropdown Styles */
+        .cart-dropdown {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: none;
+            padding: 10px;
+            top: 0;
+            right: 0;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            height: 1000px;
+        }
+
+        .cart-dropdown ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .cart-dropdown li {
+            padding: 8px 0;
+        }
+
+        /* Background Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 998;
+        }
+
+        /* Disable scrolling when overlay is visible */
+        body.disable-scroll {
+            overflow: hidden;
+        }
+
+        .icon-container {
+            position: relative;
+        }
+
+        /* Close Button Styling */
+        .cart-dropdown .close-btn {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            font-size: 45px;
+            cursor: pointer;
+            color: #000;
+        }
+
+        .counter1-box {
+            background-color: #ffffff;
+            padding: 8px 8px;
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            width: 130px;
+            height: 45px;
+            border: solid 1px #666;
+        }
+
+        .counter1-box button {
+            border: none;
+            background: none;
+            font-size: 18px;
+            margin: 0 10px;
+        }
+
+        #cart-dropdown .counter-box {
+            justify-content: space-between;
+        }
+
+        #delete-icon {
+            cursor: pointer;
+            font-size: 1rem;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- Add the overlay here -->
+    <div id="overlay" class="overlay"></div>
+
     <div class="row section1">
         <div class="col-md-12 position-relative">
             <nav class="navbar navbar-expand-lg">
@@ -24,50 +110,85 @@
                 </div>
 
                 <!-- Icons (Search, Login, Cart) on the right -->
-                <div class=" order-3 d-md-block d-none">
+                <div class="order-3 d-md-block d-none">
                     <ul class="navbar-nav ms-auto d-flex flex-row align-items-center icon-container">
                         <li class="nav-item">
-                            <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
+                            <form action="search_results.php" method="GET" class="d-flex">
+                                <input type="text" name="query" class="form-control" placeholder="Search..." aria-label="Search">
+                            </form>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="login.php"><i class="fas fa-user"></i></a> <!-- Login Icon -->
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-cart-plus"></i></a>
-                            <!-- Add to Cart Icon -->
-                        </li>
+                        <!-- Here cart.php code starts -->
+                        <?php
+
+                        include_once 'cart.php';  // Ensure this file outputs your cart UI (using your dynamic code)
+                        ?>
+
+                        <!-- Here ends the cart.php -->
+
                     </ul>
                 </div>
 
+
+                <!-- Mobile version -->
                 <div class="d-block d-md-none d-flex top-fix">
-                    <!-- Logo -->
                     <div class="logo-col hide-logo order-1 slider px-3">
                         <img src="images/logo1.jpg" class="img-fluid logo" alt="">
                     </div>
-
-                    <!-- Icons (Search, Login, Cart) on the right -->
-                    <div class=" order-2">
+                    <div class="order-2">
                         <ul class="navbar-nav ms-auto d-flex flex-row align-items-center icon-container">
                             <li class="nav-item">
                                 <a class="nav-link" href="#" id="search-icon"><i class="fas fa-search"></i></a>
-                                <!-- Search Icon -->
                             </li>
                             <div id="search-box">
-                                <input type="text" placeholder="Search...">
-                                <button type="button" id="close-search" style="border: none ;"><i
-                                        class="fas fa-times"></i></button> <!-- Cross icon -->
+                                <form action="search_results.php" method="GET">
+                                    <input type="text" name="query" placeholder="Search..." />
+                                    <button type="submit" id="search-submit"><i class="fas fa-search"></i></button>
+                                    <button type="button" id="close-search" style="border: none;"><i class="fas fa-times"></i></button>
+                                </form>
                             </div>
                             <li class="nav-item">
-                                <a class="nav-link" href="login.php"><i class="fas fa-user"></i></a> <!-- Login Icon -->
+                                <a class="nav-link" href="login.php"><i class="fas fa-user"></i></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fas fa-cart-plus"></i></a>
-                                <!-- Add to Cart Icon -->
+                                <a class="nav-link" href="#" id="cart-icon"><i class="fas fa-cart-plus"></i></a>
+                                <div id="cart-dropdown" class="cart-dropdown">
+                                    <h3 style="font-family:'Times New Roman';">Your cart</h3>
+                                    <span class="close-btn" id="close-btn">&times;</span>
+                                    <span style="font-size: 0.7rem;">PRODUCTS</span>
+                                    <span style="font-size: 0.7rem; margin-left: 270px;">TOTAL</span>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img src="images/3D11.png" alt="" style="height: 170px; width: 130px;">
+                                        </div>
+                                        <div class="col-md-8" style="padding-left: 20px;">
+                                            <h5>A Corset And Dhoti</h5>
+                                            <h6 style="font-size: 0.9rem;">Rs. 34,000</h6>
+                                            <h6 style="font-size: 0.9rem;">Size: XS</h6>
+                                            <div class="counter1-box mt-5 d-flex align-items-center">
+                                                <!-- Decrement and Increment Buttons -->
+                                                <button id="decrement2">-</button>
+                                                <span id="counter2" class="mx-2">1</span>
+                                                <button id="increment2">+</button>
+
+                                                <!-- Trash Icon for Delete -->
+                                                <a href="#" id="delete-icon" class="nav-link ms-5">
+                                                    <i class="fa-solid fa-trash" style="font-size: 1rem;"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Checkout Button at the bottom of the Cart Dropdown -->
+                                    <button class="btn  mt-4 w-100" id="checkout-btn" style="background-color: #aaa; color: #fff;">Check out</button>
+                                </div>
                             </li>
                         </ul>
                     </div>
                 </div>
-
 
                 <!-- Navbar Menu -->
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -86,24 +207,22 @@
                             <div class="position-absolute new-class">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <ul class="d-flex flex-column ">
+                                        <ul class="d-flex flex-column">
                                             <li><a href="casualkurta.php">Kurtas</a></li>
                                             <li><a href="casualfrock.php">Frocks</a></li>
                                             <li><a href="casualgown.php">Gowns</a></li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
-                                        <ul class="d-flex flex-column ">
+                                        <ul class="d-flex flex-column">
                                             <li><a href="casualco_ord.php">Co-ord sets</a></li>
                                             <li><a href="casualkaftan.php">Kaftan</a></li>
-
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
-                                        <ul class="d-flex flex-column ">
+                                        <ul class="d-flex flex-column">
                                             <li><a href="casualjacket.php">Jackets</a></li>
                                             <li><a href="casualpallazo.php">Pallazos</a></li>
-
                                         </ul>
                                     </div>
                                 </div>
@@ -117,23 +236,22 @@
                             <div class="position-absolute new-class">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <ul class="d-flex flex-column ">
-                                            <li> <a href="partyanarkali.php"> Anarkali </a> </li>
-                                            <li> <a href="partyindo_western.php"> Indo Western </a></li>
-                                            <li> <a href="partyco_ord.php"> Co-ord sets </a></li>
+                                        <ul class="d-flex flex-column">
+                                            <li><a href="partyanarkali.php">Anarkali</a></li>
+                                            <li><a href="partyindo_western.php">Indo Western</a></li>
+                                            <li><a href="partyco_ord.php">Co-ord sets</a></li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
-                                        <ul class="d-flex flex-column ">
-                                            <li> <a href="partylehenga.php"> Lehengas </a></li>
-                                            <li> <a href="partysaree.php"> Designer Saree </a> </li>
-
+                                        <ul class="d-flex flex-column">
+                                            <li><a href="partylehenga.php">Lehengas</a></li>
+                                            <li><a href="partysaree.php">Designer Saree</a></li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
-                                        <ul class="d-flex flex-column ">
-                                            <li> <a href="partygown.php"> Gowns </a> </li>
-                                            <li> <a href="partykaftan.php"> Kaftan with bottoms </a></li>
+                                        <ul class="d-flex flex-column">
+                                            <li><a href="partygown.php">Gowns</a></li>
+                                            <li><a href="partykaftan.php">Kaftan with bottoms</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -147,34 +265,65 @@
                             <div class="position-absolute new-class">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <ul class="d-flex flex-column ">
-                                            <li> <a href="accearing.php"> Earings </a></li>
-                                            <li> <a href="accnecklace.php"> Necklace </a></li>
+                                        <ul class="d-flex flex-column">
+                                            <li><a href="accearing.php">Earings</a></li>
+                                            <li><a href="accnecklace.php">Necklace</a></li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
-                                        <ul class="d-flex flex-column ">
-                                            <li> <a href="accbottom.php"> Bottoms </a></li>
-                                            <li> <a href="accdupatta.php"> Dupattas </a></li>
+                                        <ul class="d-flex flex-column">
+                                            <li><a href="accdupatta.php">Dupattas</a></li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
-                                        <ul class="d-flex flex-column ">
-                                            <li> <a href="accbag.php"> Bags </a></li>
+                                        <ul class="d-flex flex-column">
+                                            <li><a href="accbag.php">Bags</a></li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="contact.php">Contact Us</a>
                         </li>
-
                     </ul>
                 </div>
-
             </nav>
         </div>
     </div>
+
+    <script>
+        // Function to open the cart dropdown
+        document.getElementById("cart-icon").addEventListener("click", function() {
+            var dropdown = document.getElementById("cart-dropdown");
+            var overlay = document.getElementById("overlay");
+            var body = document.body;
+
+            // Show the dropdown and overlay
+            dropdown.style.display = "block";
+            overlay.style.display = "block";
+            body.classList.add("disable-scroll"); // Disable scrolling
+
+            // Hide the dropdown and overlay when the overlay is clicked
+            overlay.addEventListener("click", function() {
+                dropdown.style.display = "none";
+                overlay.style.display = "none";
+                body.classList.remove("disable-scroll"); // Re-enable scrolling
+            });
+        });
+
+        // Close the dropdown when the close button is clicked
+        document.getElementById("close-btn").addEventListener("click", function() {
+            var dropdown = document.getElementById("cart-dropdown");
+            var overlay = document.getElementById("overlay");
+            var body = document.body;
+
+            // Hide the dropdown and overlay
+            dropdown.style.display = "none";
+            overlay.style.display = "none";
+            body.classList.remove("disable-scroll"); // Re-enable scrolling
+        });
+    </script>
 </body>
+
+</html>
