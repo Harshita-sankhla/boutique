@@ -1,126 +1,141 @@
-<div class="row">
-    <div class="col-md-6 col-12 px-5 py-5 ">
-        <img id="mainImage" src="admin/images/<?php echo $image1; ?>" class="img-fluid size" alt="Product Image">
-        <div class="row mt-3">
-            <div class="col-4 col-md-3 text-center">
-                <img src="admin/images/<?php echo $image1; ?>" class="img-fluid thumbnail" alt=""
-                    onclick="changeImage('admin/images/<?php echo $image1; ?>')">
-            </div>
-            <div class="col-4 col-md-3 text-center">
-                <img src="admin/images/<?php echo $image2; ?>" class="img-fluid thumbnail" alt=""
-                    onclick="changeImage('admin/images/<?php echo $image2; ?>')">
-            </div>
-            <div class="col-4 col-md-3 text-center">
-                <img src="admin/images/<?php echo $image3; ?>" class="img-fluid thumbnail" alt=""
-                    onclick="changeImage('admin/images/<?php echo $image3; ?>')">
-            </div>
+<?php
+$total_items = 0;
+if (isset($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $item) {
+        $total_items += $item['quantity'];
+    }
+}
+?>
+
+<style>
+    .cart-icon-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .cart-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: #ff4444;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 12px;
+        min-width: 18px;
+        text-align: center;
+    }
+
+    .cart-dropdown {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: white;
+        min-width: 400px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        padding: 20px;
+        border-radius: 4px;
+    }
+
+    .cart-dropdown.show {
+        display: block;
+    }
+</style>
+
+<li class="nav-item">
+    <div class="cart-icon-container">
+        <a class="nav-link" href="#" id="cart-icon">
+            <i class="fas fa-cart-plus"></i>
+            <?php if ($total_items > 0): ?>
+                <span class="cart-badge"><?php echo $total_items; ?></span>
+            <?php endif; ?>
+        </a>
+        <div id="cart-dropdown" class="cart-dropdown">
+            <h3 style="font-family:'Times New Roman';">Your cart</h3>
+            <span class="close-btn" id="close-btn">&times;</span>
+            <span style="font-size: 0.7rem;">PRODUCTS</span>
+            <span style="font-size: 0.7rem; margin-left: 270px;">TOTAL</span>
+            <hr>
+            <?php if (!isset($_SESSION['cart']) || count($_SESSION['cart']) == 0): ?>
+                <p style="text-align: center;">Your cart is empty.</p>
+            <?php else: ?>
+                <?php
+                $subtotal = 0;
+                foreach ($_SESSION['cart'] as $prod_id => $item):
+                    $item_total = $item['prod_price'] * $item['quantity'];
+                    $subtotal += $item_total;
+                ?>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <div class="col-md-4">
+                            <img src="<?php echo isset($item['prod_image']) ? $item['prod_image'] : 'images/default.png'; ?>" alt="" style="height: 170px; width: 130px;">
+                        </div>
+                        <div class="col-md-8" style="padding-left: 20px;">
+                            <h5><?php echo htmlspecialchars($item['prod_name']); ?></h5>
+                            <h6 style="font-size: 0.9rem;">Rs. <?php echo htmlspecialchars($item['prod_price']); ?></h6>
+                            <?php if (isset($item['prod_size'])): ?>
+                                <h6 style="font-size: 0.9rem;">Size: <?php echo htmlspecialchars($item['prod_size']); ?></h6>
+                            <?php endif; ?>
+                            <div class="counter1-box mt-5 d-flex align-items-center">
+                                <button onclick="updateCart('<?php echo $prod_id; ?>', -1)">-</button>
+                                <span class="mx-2"><?php echo htmlspecialchars($item['quantity']); ?></span>
+                                <button onclick="updateCart('<?php echo $prod_id; ?>', 1)">+</button>
+                                <a href="remove_from_cart.php?prod_id=<?php echo urlencode($prod_id); ?>" class="nav-link ms-5">
+                                    <i class="fa-solid fa-trash" style="font-size: 1rem;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <hr>
+            <p style="text-align: right; margin-right: 10px;">
+                <strong>Subtotal: Rs. <?php echo isset($subtotal) ? $subtotal : '0'; ?></strong>
+            </p>
+            <button class="btn mt-4 w-100" id="checkout-btn" style="background-color: #aaa; color: #fff;">Check out</button>
         </div>
     </div>
-    <div class="col-md-6 col-12">
-        <h2 style="padding-top: 8rem;"><?php echo $name; ?></h2>
-        <p style="padding-top: 1rem; margin-bottom: 0;color:#444444 ;">Rs. <?php echo $price; ?> </p>
-        <small style="color: #444444;">Shipping calculated at checkout.</small>
-        <hr style="border: 1px solid #444444; margin: 1rem 0;">
-        <div class="d-flex justify-content-center flex-wrap" style="padding-top: 1rem;">
-            <p style="padding-right: 3rem;">size</p>
-            <!-- Small Round Buttons -->
-            <button class="btn btn-light btn-round mx-2 border-black custom-hover">S</button>
-            <button class="btn btn-light btn-round mx-2 border-black custom-hover">M</button>
-            <button class="btn btn-light btn-round mx-2 border-black custom-hover">L</button>
-            <button class="btn btn-light btn-round mx-2 border-black custom-hover">XL</button>
-            <button class="btn btn-light btn-round mx-2 border-black custom-hover">XXL</button>
-            <button class="btn btn-light btn-round mx-2 border-black custom-hover">XXXL</button>
+</li>
 
-            <!-- Large Round Button -->
-            <button id="customSizeBtn" class="btn btn-light btn-large mx-2 border-black" style="width: 100px;">Custom</button>
-        </div>
-        <!-- Input box for custom size (hidden by default) -->
-        <div id="customSizeInput" style="display: none; margin-top: 1rem; text-align: center;">
-            <input type="text" class="form-control custom-input-border" placeholder="Enter your custom size"
-                style="width: 650px; margin: 0 auto; margin-top: 2rem;">
-        </div>
-        <hr style="border: 1px solid #444444; margin: 1rem 0;">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cartIcon = document.getElementById('cart-icon');
+        const cartDropdown = document.getElementById('cart-dropdown');
+        const closeBtn = document.getElementById('close-btn');
+        let isCartOpen = false;
 
-        <p class="size-chart">Size Chart</p>
-        <!-- size chart pop up -->
+        // Toggle cart dropdown when clicking the cart icon
+        cartIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            isCartOpen = !isCartOpen;
+            cartDropdown.classList.toggle('show');
+        });
 
-        <!-- Overlay -->
-        <div class="overlay" id="overlay"></div>
+        // Close cart when clicking the close button
+        closeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            isCartOpen = false;
+            cartDropdown.classList.remove('show');
+        });
 
-        <!-- Popup -->
-        <div class="popup" id="sizeChartPopup">
-            <h3>Size Chart for Women</h3>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Size</th>
-                        <th>Chest (inches)</th>
-                        <th>Waist (inches)</th>
-                        <th>Hips (inches)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>S</td>
-                        <td>34-35</td>
-                        <td>26-27</td>
-                        <td>36-37</td>
-                    </tr>
-                    <tr>
-                        <td>M</td>
-                        <td>36-37</td>
-                        <td>28-29</td>
-                        <td>38-39</td>
-                    </tr>
-                    <tr>
-                        <td>L</td>
-                        <td>38-40</td>
-                        <td>30-32</td>
-                        <td>40-42</td>
-                    </tr>
-                    <tr>
-                        <td>XL</td>
-                        <td>41-43</td>
-                        <td>33-35</td>
-                        <td>43-45</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="btn btn-secondary" id="closePopup">Close</button>
-        </div>
+        // Close cart when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!cartDropdown.contains(e.target) && !cartIcon.contains(e.target) && isCartOpen) {
+                isCartOpen = false;
+                cartDropdown.classList.remove('show');
+            }
+        });
 
-        <!-- Counter Box -->
-        <div class="d-flex flex-wrap">
-            <div class="counter-box">
-                <button id="decrement1">-</button>
-                <span id="counter1">1</span>
-                <button id="increment1">+</button>
-            </div>
-            <div class="counter-box" style="margin-left: 50px; width: 400px;">
-                <p>Add to Cart</p>
-            </div>
-        </div>
-        <div class="buy" style="width: 650px; background-color: #999; color: white; padding: 5px; text-align: center; margin-bottom: 50px;">
-            <p style="margin:8px 0">Buy it now</p>
-        </div>
+        // Prevent cart from closing when clicking inside it
+        cartDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    });
 
-        <div class="container mt-5 ">
-            <div>
-                <span class="tab active" id="descriptionTab">Description</span>
-                <span class="tab" id="shippingTab">Shipping</span>
-            </div>
-
-            <!-- Display description fetched from database -->
-            <div class="content active" id="descriptionContent">
-                <p><?php echo $description; ?></p>
-            </div>
-
-            <!-- Display shipping fetched from database -->
-            <div class="content" id="shippingContent">
-                <p><?php echo $shipping; ?></p>
-            </div>
-        </div>
-        <br>
-        <hr style="border: 1px solid #444444; margin: 1rem 0;">
-    </div>
-</div>
+    // Update cart function
+    function updateCart(prodId, change) {
+        // You can implement AJAX cart update here
+        console.log('Updating cart for product:', prodId, 'change:', change);
+    }
+</script>

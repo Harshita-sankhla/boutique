@@ -2,6 +2,7 @@
 // Include the database connection
 include("admin/config/connection.php");
 
+
 // Fetch products from the database (for example, from the "bags" category)
 $query = "SELECT image, name, price FROM bag";
 $result = mysqli_query($conn, $query);

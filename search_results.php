@@ -3,6 +3,8 @@
 
 // Include the database connection
 include('admin/config/connection.php'); // Make sure this file contains your correct database connection.
+include("admin/config/session.php"); // Include session for admin login check
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get the search query from the user

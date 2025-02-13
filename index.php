@@ -1,6 +1,6 @@
 <?php
 include("admin/config/connection.php");
-
+// session_start();
 // Query to get slider images
 $sql = "SELECT image1,image2 FROM  `carousel`";
 $result = $conn->query($sql);
@@ -125,9 +125,9 @@ if ($result1->num_rows > 0) {
     <!-- Section 3 End  -->
 
     <!-- Section 4 Start  -->
-    <div class="container-fluid ">
-        <div class="row section3">
-            <div class="col-md-3 col-sm-6  d-none d-sm-block image-fade-in">
+    <div class="container-fluid">
+        <div class="row section3 justify-content-center">
+            <div class="col-lg-3 col-md-6 col-sm-12 image-fade-in">
                 <div class="card" style="background-color: transparent; border: none;">
                     <div class="wrapper">
                         <img src="images/3D11.png" class="cover-image" alt="">
@@ -135,7 +135,7 @@ if ($result1->num_rows > 0) {
                     <img src="images/3D12.png" class="character" alt="">
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6 d-none d-sm-block image-fade-in">
+            <div class="col-lg-3 col-md-6 col-sm-12 d-none d-md-block image-fade-in">
                 <div class="card" style="background-color: transparent; border: none;">
                     <div class="wrapper">
                         <img src="images/3D21.png" class="cover-image" alt="">
@@ -143,7 +143,7 @@ if ($result1->num_rows > 0) {
                     <img src="images/3D22.png" class="character" alt="">
                 </div>
             </div>
-            <div class="col-md-3  d-none d-md-block image-fade-in">
+            <div class="col-lg-3 d-none d-lg-block image-fade-in">
                 <div class="card" style="background-color: transparent; border: none;">
                     <div class="wrapper">
                         <img src="images/3D31.png" class="cover-image" alt="">
@@ -151,7 +151,7 @@ if ($result1->num_rows > 0) {
                     <img src="images/3D32.png" class="character" alt="">
                 </div>
             </div>
-            <div class="col-md-3 d-none d-md-block image-fade-in">
+            <div class="col-lg-3 d-none d-lg-block image-fade-in">
                 <div class="card" style="background-color: transparent; border: none;">
                     <div class="wrapper">
                         <img src="images/3D41.png" class="cover-image" alt="">
@@ -161,6 +161,7 @@ if ($result1->num_rows > 0) {
             </div>
         </div>
     </div>
+
     <!-- section 4 End  -->
 
     <!-- section 5 Start  -->

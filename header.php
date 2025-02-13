@@ -123,7 +123,7 @@
                         <!-- Here cart.php code starts -->
                         <?php
 
-                        include_once 'cart.php';  // Ensure this file outputs your cart UI (using your dynamic code)
+                        include 'cart.php';  // Ensure this file outputs your cart UI (using your dynamic code)
                         ?>
 
                         <!-- Here ends the cart.php -->
@@ -152,40 +152,13 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="login.php"><i class="fas fa-user"></i></a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" id="cart-icon"><i class="fas fa-cart-plus"></i></a>
-                                <div id="cart-dropdown" class="cart-dropdown">
-                                    <h3 style="font-family:'Times New Roman';">Your cart</h3>
-                                    <span class="close-btn" id="close-btn">&times;</span>
-                                    <span style="font-size: 0.7rem;">PRODUCTS</span>
-                                    <span style="font-size: 0.7rem; margin-left: 270px;">TOTAL</span>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <img src="images/3D11.png" alt="" style="height: 170px; width: 130px;">
-                                        </div>
-                                        <div class="col-md-8" style="padding-left: 20px;">
-                                            <h5>A Corset And Dhoti</h5>
-                                            <h6 style="font-size: 0.9rem;">Rs. 34,000</h6>
-                                            <h6 style="font-size: 0.9rem;">Size: XS</h6>
-                                            <div class="counter1-box mt-5 d-flex align-items-center">
-                                                <!-- Decrement and Increment Buttons -->
-                                                <button id="decrement2">-</button>
-                                                <span id="counter2" class="mx-2">1</span>
-                                                <button id="increment2">+</button>
+                            <!-- Here cart.php code starts -->
+                            <?php
 
-                                                <!-- Trash Icon for Delete -->
-                                                <a href="#" id="delete-icon" class="nav-link ms-5">
-                                                    <i class="fa-solid fa-trash" style="font-size: 1rem;"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
+                            include 'cart.php';  // Ensure this file outputs your cart UI (using your dynamic code)
+                            ?>
 
-                                    <!-- Checkout Button at the bottom of the Cart Dropdown -->
-                                    <button class="btn  mt-4 w-100" id="checkout-btn" style="background-color: #aaa; color: #fff;">Check out</button>
-                                </div>
-                            </li>
+                            <!-- Here ends the cart.php -->
                         </ul>
                     </div>
                 </div>
