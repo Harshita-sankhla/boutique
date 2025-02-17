@@ -264,23 +264,27 @@ if ($category && $product_id) {
                     alert('There was an error processing your request. Please try again.');
                 });
         }
+        //script for description and shipping
+        // Get elements
+        const descriptionTab = document.getElementById('descriptionTab');
+        const shippingTab = document.getElementById('shippingTab');
+        const descriptionContent = document.getElementById('descriptionContent');
+        const shippingContent = document.getElementById('shippingContent');
 
-        // Add this to your existing DOMContentLoaded event listener
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if there's a pending purchase after login
-            const pendingPurchase = localStorage.getItem('pendingPurchase');
-            if (pendingPurchase && <?php echo isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'true' : 'false'; ?>) {
-                const purchaseData = JSON.parse(pendingPurchase);
-                // Clear the pending purchase
-                localStorage.removeItem('pendingPurchase');
-                // Auto-select the size that was previously chosen
-                const sizeButton = document.querySelector(`.size-btn[data-size="${purchaseData.prod_size}"]`);
-                if (sizeButton) {
-                    sizeButton.click();
-                }
-                // Submit the form
-                document.getElementById('buyNowForm').submit();
-            }
+        // Show description content on click
+        descriptionTab.addEventListener('click', function() {
+            descriptionTab.classList.add('active');
+            shippingTab.classList.remove('active');
+            descriptionContent.classList.add('active');
+            shippingContent.classList.remove('active');
+        });
+
+        //show shipping content on click
+        shippingTab.addEventListener('click', function() {
+            shippingTab.classList.add('active');
+            descriptionTab.classList.remove('active');
+            shippingContent.classList.add('active');
+            descriptionContent.classList.remove('active');
         });
     </script>
 

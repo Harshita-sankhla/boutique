@@ -137,9 +137,11 @@ if (isset($_SESSION['cart'])) {
                                     <button onclick="updateCart('<?php echo $prod_id; ?>', -1)">-</button>
                                     <span class="mx-2" data-quantity="<?php echo $prod_id; ?>"><?php echo htmlspecialchars($item['quantity']); ?></span>
                                     <button onclick="updateCart('<?php echo $prod_id; ?>', 1)">+</button>
-                                    <a href="#" class="nav-link ms-5 delete-product" data-prod-id="<?php echo $prod_id; ?>">
+                                    <a href="remove_from_cart.php?prod_id=<?php echo $prod_id; ?>" class="nav-link ms-5 delete-product">
                                         <i class="fa-solid fa-trash" style="font-size: 1rem;"></i>
                                     </a>
+
+
                                 </div>
                             </div>
                         </div>
