@@ -155,7 +155,7 @@ if (isset($_SESSION['cart'])) {
                 <p style="text-align: right; margin: 0 10px 10px 0;">
                     <span>Total : Rs. <?php echo isset($subtotal) ? $subtotal : '0'; ?></span>
                 </p>
-                <button class="btn w-100" id="checkout-btn" style="background-color: #aaa; color: #fff;">Check out</button>
+                <button onclick="handleBuyNow()" class="btn w-100" id="checkout-btn" style="background-color: #aaa; color: #fff;">Check out</button>
             </div>
         </div>
     </div>
@@ -254,5 +254,9 @@ if (isset($_SESSION['cart'])) {
                     btn.disabled = false;
                 });
             });
+    }
+
+    function handleBuyNow() {
+        window.location.href = "buy_now.php";
     }
 </script>

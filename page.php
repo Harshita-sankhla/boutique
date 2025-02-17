@@ -223,46 +223,7 @@ if ($category && $product_id) {
         }
 
         function handleBuyNow() {
-            // Get selected size and quantity
-            const selectedSize = document.getElementById('selected_size').value;
-            const currentQuantity = document.getElementById('counter1').innerText;
-
-            // Check if size is selected
-            if (!selectedSize) {
-                showAlert('sizeAlert');
-                return;
-            }
-
-            // Update form values
-            document.getElementById('buy_now_size').value = selectedSize;
-            document.getElementById('buy_now_quantity').value = currentQuantity;
-
-            // Check login status
-            fetch('check_login.php')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.logged_in) {
-                        // User is logged in, submit the form
-                        document.getElementById('buyNowForm').submit();
-                    } else {
-                        // User is not logged in, store product details and redirect to login
-                        const productDetails = {
-                            prod_id: '<?php echo $product_id; ?>',
-                            prod_name: '<?php echo $name; ?>',
-                            prod_price: '<?php echo $price; ?>',
-                            prod_size: selectedSize,
-                            quantity: currentQuantity
-                        };
-                        localStorage.setItem('pendingPurchase', JSON.stringify(productDetails));
-
-                        // Redirect to login page with return URL
-                        window.location.href = 'login.php?redirect=' + encodeURIComponent(window.location.href);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('There was an error processing your request. Please try again.');
-                });
+            window.location.href = "buy_now.php";
         }
         //script for description and shipping
         // Get elements
