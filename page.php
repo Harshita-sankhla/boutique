@@ -222,8 +222,27 @@ if ($category && $product_id) {
             }, 3000);
         }
 
+        // Modify the handleBuyNow function to pass product data
         function handleBuyNow() {
-            window.location.href = "order.php";
+            // Get the selected size
+            const selectedSize = document.getElementById('selected_size').value;
+            if (!selectedSize) {
+                alert('Please select a size before proceeding to buy');
+                return;
+            }
+
+            // Create URL with product information
+            const productData = {
+                id: '<?php echo $product_id; ?>',
+                category: '<?php echo $category; ?>',
+                name: '<?php echo $name; ?>',
+                price: '<?php echo $price; ?>',
+                image: '<?php echo $image1; ?>',
+                size: selectedSize
+            };
+
+            const queryString = new URLSearchParams(productData).toString();
+            window.location.href = "order.php?" + queryString;
         }
         //script for description and shipping
         // Get elements

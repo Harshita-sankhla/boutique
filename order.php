@@ -6,6 +6,21 @@ $email = $firstName = $lastName = $address = $city = $phone = $country = "";
 $errorMsg = "";
 $successMsg = "";
 
+// Get product information from URL parameters
+$product_id = isset($_GET['sno']) ? $_GET['sno'] : '';
+$category = isset($_GET['category']) ? $_GET['category'] : '';
+$product_name = isset($_GET['name']) ? $_GET['name'] : '';
+$product_price = isset($_GET['price']) ? $_GET['price'] : '';
+$product_image = isset($_GET['image']) ? $_GET['image'] : '';
+$product_size = isset($_GET['size']) ? $_GET['size'] : '';
+
+$total_price = $product_price;
+
+// Process form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // [Previous form processing code remains the same]
+}
+
 // Process form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize and validate input data
@@ -279,19 +294,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <!-- Product Details Section -->
+        <!-- Modified Product Details Section -->
         <div class="col-6" style="flex: 1;">
             <div class="row mb-4" style="margin-top: 8rem;">
                 <div class="col-md-3">
-                    <img src="images/3D11.png" alt="" style="height: 130px; width: 110px;">
+                    <img src="admin/images/<?php echo htmlspecialchars($product_image); ?>" alt="<?php echo htmlspecialchars($product_name); ?>" style="height: 130px; width: 110px;">
                 </div>
                 <div class="col-md-9">
-                    <span style="font-size: 1rem;">product_name</span>
-                    <span style="font-size: 1rem; margin-left: 40px;">Rs. 12,000.00</span>
-                    <h6 style="font-size: 1rem; color:#777">XL</h6>
+                    <span style="font-size: 1.3rem;"><?php echo htmlspecialchars($product_name); ?></span>
+                    <span style="font-size: 1.2rem; margin-left: 40px;">Rs. <?php echo number_format((float)$product_price, 2); ?></span>
+                    <h6 style="font-size: 1.2rem; color:#777">Size : <?php echo htmlspecialchars($product_size); ?></h6>
                 </div>
             </div>
-            <div>
-                <span style="font-weight: bold; margin-left: 25rem;">Total :</span>
+            <div class="total-section" style="margin-top: 2rem; padding-right: 3rem;">
+                <div class="d-flex justify-content-between">
+                    <span style="color: #666;">Subtotal:</span>
+                    <span>Rs. <?php echo number_format((float)$product_price, 2); ?></span>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <span style="color: #666;">Shipping:</span>
+                    <span>Calculated at next step</span>
+                </div>
+                <hr style="margin: 1rem 0;">
+                <div class="d-flex justify-content-between">
+                    <span style="font-weight: bold;">Total:</span>
+                    <span style="font-weight: bold;">Rs. <?php echo number_format((float)$total_price, 2); ?></span>
+                </div>
             </div>
         </div>
     </div>
