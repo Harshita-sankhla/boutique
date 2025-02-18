@@ -257,6 +257,6 @@ if (isset($_SESSION['cart'])) {
     }
 
     function handleBuyNow() {
-        window.location.href = "buy_now.php";
+        window.location.href = "order.php";
     }
 </script>

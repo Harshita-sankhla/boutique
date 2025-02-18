@@ -223,7 +223,7 @@ if ($category && $product_id) {
         }
 
         function handleBuyNow() {
-            window.location.href = "buy_now.php";
+            window.location.href = "order.php";
         }
         //script for description and shipping
         // Get elements
