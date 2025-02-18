@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 include("admin/config/connection.php");
 
 $category = isset($_GET['category']) ? $_GET['category'] : null;

@@ -86,7 +86,7 @@ if (isset($_POST['submit'])) {
             }
 
             // Update record in the database with the new or retained image paths
-            $sql = "UPDATE `carousel` SET `image1`='$image1', `image2`='$image2`='$image' WHERE `sno`='$uid'";
+            $sql = "UPDATE `carousel` SET `image1`='$image1', `image2`='$image2' WHERE `sno`='$uid'";
             $result = mysqli_query($conn, $sql);
             if ($result) {
                 $_SESSION['successMessage'] = "Record updated successfully!";
