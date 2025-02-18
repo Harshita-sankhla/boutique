@@ -1,8 +1,11 @@
 <?php
 include("admin/config/connection.php");
 
+$cat_name = $_GET['cat_name'];
+$cat_to_show = $_GET['cat'];
+$img_to_show = $_GET['img'];
 // Fetch products from the database
-$query = "SELECT sno,image1,image2,name,price FROM casualkurta";
+$query = "SELECT * FROM  $cat_name";
 $res = mysqli_query($conn, $query);
 ?>
 <!doctype html>
@@ -30,10 +33,10 @@ $res = mysqli_query($conn, $query);
     <!-- section  header End  -->
 
     <!-- section 1 Start  -->
-    <div class="container-fluid backimage" style=" background-image: url(images/casualkurta.jpg);">
+    <div class="container-fluid backimage" style=" background-image: url(<?php echo $img_to_show; ?>);">
         <div class="overlay"></div> <!-- Increased overlay opacity -->
         <div class="text"> <!-- Changed text color to yellow -->
-            <h1> <b>KURTAS</b> </h1> <!-- Increased font size -->
+            <h1> <b><?php echo $cat_to_show; ?></b> </h1> <!-- Increased font size -->
         </div>
     </div>
     <!-- section 1 End  -->
@@ -51,7 +54,7 @@ $res = mysqli_query($conn, $query);
                     $price = $row['price'];
 
                     // Create a link to page.php with URL parameters
-                    $product_link = "page.php?category=casualkurta&id=" . urlencode($row['sno']) . "&image1=" . urlencode($row['image1']) . "&image2=" . urlencode($row['image2']) . "&name=" . urlencode($row['name']) . "&price=" . urlencode($row['price']);
+                    $product_link = "page.php?category=$cat_name&id=" . urlencode($row['sno']) . "&image1=" . urlencode($row['image1']) . "&image2=" . urlencode($row['image2']) . "&name=" . urlencode($row['name']) . "&price=" . urlencode($row['price']);
 
                     // Display each product with the link
                     echo '<div class="col-md-3 col-6 mb-4 mb-md-0 text-center image-fade-in py-4">';

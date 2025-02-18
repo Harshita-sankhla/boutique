@@ -1,10 +1,12 @@
 <?php
 // Include the database connection
 include("admin/config/connection.php");
-
+$cat_name = $_GET['cat_name'];
+$cat_to_show = $_GET['cat'];
+$img_to_show = $_GET['img'];
 
 // Fetch products from the database (for example, from the "bags" category)
-$query = "SELECT image, name, price FROM bag";
+$query = "SELECT * FROM $cat_name";
 $result = mysqli_query($conn, $query);
 
 // Check if there are products
@@ -40,10 +42,10 @@ if (mysqli_num_rows($result) > 0) {
     <!-- section header End -->
 
     <!-- section 1 Start -->
-    <div class="container-fluid backimage" style=" background-image: url(images/accbag.jpg);">
+    <div class="container-fluid backimage" style=" background-image: url(<?php echo $img_to_show; ?>);">
         <div class="overlay"></div> <!-- Increased overlay opacity -->
         <div class="text"> <!-- Changed text color to yellow -->
-            <h1> <b>BAGS</b> </h1> <!-- Increased font size -->
+            <h1> <b><?php echo $cat_to_show; ?></b> </h1> <!-- Increased font size -->
         </div>
     </div>
     <!-- section 1 End -->

@@ -181,21 +181,21 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <ul class="d-flex flex-column">
-                                            <li><a href="casualkurta.php">Kurtas</a></li>
-                                            <li><a href="casualfrock.php">Frocks</a></li>
-                                            <li><a href="casualgown.php">Gowns</a></li>
+                                            <li><a href="casualkurta.php?cat_name=casualkurta&img=images/casualkurta.jpg&cat=KURTAS">Kurtas</a></li>
+                                            <li><a href="casualkurta.php?cat_name=casualfrock&img=images/casualfrock.jpg&cat=FORCKS">Frocks</a></li>
+                                            <li><a href="casualkurta.php?cat_name=casualgown&img=images/casualgown.jpg&cat=GOWNS">Gowns</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class=" col-md-4">
+                                        <ul class="d-flex flex-column">
+                                            <li><a href="casualkurta.php?cat_name=casualco_ord&img=images/casualco-ord-sets.jpg&cat=CO-ORD SETS">Co-ord sets</a></li>
+                                            <li><a href="casualkurta.php?cat_name=casualkaftan&img=images/casualkaftan.jpg&cat=KAFTAN">Kaftan</a></li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
                                         <ul class="d-flex flex-column">
-                                            <li><a href="casualco_ord.php">Co-ord sets</a></li>
-                                            <li><a href="casualkaftan.php">Kaftan</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <ul class="d-flex flex-column">
-                                            <li><a href="casualjacket.php">Jackets</a></li>
-                                            <li><a href="casualpallazo.php">Pallazos</a></li>
+                                            <li><a href="casualkurta.php?cat_name=casualjacket&img=images/casualjacket.jpg&cat=JACKETS">Jackets</a></li>
+                                            <li><a href="casualkurta.php?cat_name=casualpallazo&img=images/casualpallazos.jpg&cat=PALLAZOS">Pallazos</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -210,21 +210,21 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <ul class="d-flex flex-column">
-                                            <li><a href="partyanarkali.php">Anarkali</a></li>
-                                            <li><a href="partyindo_western.php">Indo Western</a></li>
-                                            <li><a href="partyco_ord.php">Co-ord sets</a></li>
+                                            <li><a href="casualkurta.php?cat_name=partyanarkali&img=images/partyanarkali.jpg&cat=ANARKALI">Anarkali</a></li>
+                                            <li><a href="casualkurta.php?cat_name=partywestern&img=images/partywestern.jpg&cat=INDO WESTERN">Indo Western</a></li>
+                                            <li><a href="casualkurta.php?cat_name=partyco_ord&img=images/partyco-ord.jpg&cat=CO-ORD SETS">Co-ord sets</a></li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
                                         <ul class="d-flex flex-column">
-                                            <li><a href="partylehenga.php">Lehengas</a></li>
-                                            <li><a href="partysaree.php">Designer Saree</a></li>
+                                            <li><a href="casualkurta.php?cat_name=partylehenga&img=images/partylehenga.jpg&cat=LEHENGAS">Lehengas</a></li>
+                                            <li><a href="casualkurta.php?cat_name=partysaree&img=images/partysaree.jpg&cat=SAREE"> Saree</a></li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
                                         <ul class="d-flex flex-column">
-                                            <li><a href="partygown.php">Gowns</a></li>
-                                            <li><a href="partykaftan.php">Kaftan with bottoms</a></li>
+                                            <li><a href="casualkurta.php?cat_name=partygown&img=images/partygown.jpg&cat=GOWNS">Gowns</a></li>
+                                            <li><a href="casualkurta.php?cat_name=partykaftan&img=images/partykaftan.jpg&cat=KAFTAN">Kaftan with bottoms</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -239,18 +239,18 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <ul class="d-flex flex-column">
-                                            <li><a href="accearing.php">Earings</a></li>
-                                            <li><a href="accnecklace.php">Necklace</a></li>
+                                            <li><a href="accbag.php?cat_name=earing&img=images/accearing.jpg&cat=EARINGS">Earings</a></li>
+                                            <li><a href="accbag.php?cat_name=necklace&img=images/accnecklace.jpg&cat=NECKLACE">Necklace</a></li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
                                         <ul class="d-flex flex-column">
-                                            <li><a href="accdupatta.php">Dupattas</a></li>
+                                            <li><a href="accbag.php?cat_name=dupatta&img=images/accdupatta.jpg&cat=DUPATTAS">Dupattas</a></li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
                                         <ul class="d-flex flex-column">
-                                            <li><a href="accbag.php">Bags</a></li>
+                                            <li><a href="accbag.php?cat_name=bag&img=images/accbag.jpg&cat=BAGS">Bags</a></li>
                                         </ul>
                                     </div>
                                 </div>
