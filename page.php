@@ -243,6 +243,8 @@ if ($category && $product_id) {
 
             const queryString = new URLSearchParams(productData).toString();
             window.location.href = "order.php?" + queryString;
+
+
         }
         //script for description and shipping
         // Get elements

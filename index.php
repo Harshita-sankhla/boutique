@@ -221,7 +221,9 @@ if ($result1->num_rows > 0) {
                     <br> contemporary grace through breathtaking ornate <br> embroideries.
                 </p>
                 <button class="mt-4 px-4 py-2 btn btn-outline-light"
-                    style="border: none; background-color: #ccc; color: white; "
+                    style="border: none; background-color: #ccc; color: white; transition: background-color 0.3s;"
+                    onmouseover="this.style.backgroundColor='#999'"
+                    onmouseout="this.style.backgroundColor='#ccc'"
                     onclick="window.location.href='partyanarkali.php'">Shop Here</button>
 
             </div>
@@ -342,7 +344,9 @@ if ($result1->num_rows > 0) {
                     <br> splendour.
                 </p>
                 <button class="my-4 px-4 py-2 btn btn-outline-light"
-                    style="border: none; background-color: #ccc; color: white;"
+                    style="border: none; background-color: #ccc; color: white; transition: background-color 0.3s;"
+                    onmouseover="this.style.backgroundColor='#999'"
+                    onmouseout="this.style.backgroundColor='#ccc'"
                     onclick="window.location.href='casualgown.php'">EXPLORE COLLECTION</button>
             </div>
         </div>
@@ -406,7 +410,9 @@ if ($result1->num_rows > 0) {
         <div class="row py-4 px-4 text-center" style=" background-color: #f7f7f7;">
             <div col-12>
                 <button class="my-4 px-4 py-2 btn btn-outline-light"
-                    style="border: none; background-color: #ccc; color: white; border-radius: 0;"
+                    style="border: none; background-color: #ccc; color: white; border-radius: 0;transition: background-color 0.3s;"
+                    onmouseover="this.style.backgroundColor='#999'"
+                    onmouseout="this.style.backgroundColor='#ccc'"
                     onclick="window.location.href='collection.php'">View all</button>
             </div>
 
