@@ -144,6 +144,9 @@ $log = mysqli_fetch_assoc($reslog);
                 <li c style="border:1px solid #aaa ; padding:7px;">
                     <a href="user_login.php"><i class="fas fa-user fa-3x"></i> User Login</a>
                 </li>
+                <li c style="border:1px solid #aaa ; padding:7px;">
+                    <a href="order.php"><i class=" fa-solid fa-bag-shopping fa-3x"></i> Orders</a>
+                </li>
             </ul>
 
         </div>
